@@ -1,0 +1,134 @@
+log:
+  stdout_log_level: INFO
+
+!include ../shared_config.yaml
+
+# =============================================================================
+# PRICE TRACKING AGENT (SerpApi + Express)
+# =============================================================================
+
+apps:
+  - name: pricetracking_app
+    app_base_path: .
+    app_module: solace_agent_mesh.agent.sac.app
+
+    broker:
+      <<: *broker_connection
+
+    app_config:
+      namespace: ${NAMESPACE, sam/}
+      supports_streaming: true
+      agent_name: "Pricetracking"
+      display_name: "Price Tracking API"
+      model: *general_model
+
+      instruction: |
+        You provide an Express API for fetching product prices from SerpApi.
+        Use the reference implementation below as the source of truth when
+        answering questions or generating updates.
+
+        REFERENCE IMPLEMENTATION (backend):
+        ```js
+        import express from "express";
+        import "dotenv/config";
+
+        const app = express();
+        app.use(express.json());
+
+        app.get("/health", (req, res) => {
+          res.json({ status: "ok" });
+        });
+
+        function toOffers(data) {
+          const list = Array.isArray(data?.shopping_results) ? data.shopping_results : [];
+          return list.map((r) => ({
+            title: r.title || null,
+            store: r.source || null,
+            price_text: r.price || null,
+            price_number: typeof r.extracted_price === "number" ? r.extracted_price : null,
+            url: r.product_link || r.link || null,
+            rating: typeof r.rating === "number" ? r.rating : null,
+            reviews: typeof r.reviews === "number" ? r.reviews : null,
+            delivery: r.delivery || null,
+            position: typeof r.position === "number" ? r.position : null,
+          })).filter(o => o.price_text && o.url);
+        }
+
+        app.get("/api/prices", async (req, res) => {
+          try {
+            const q = String(req.query.q || "").trim();
+            if (!q) return res.status(400).json({ error: "Missing q" });
+
+            const apiKey = process.env.PRICE_API_KEY;
+            if (!apiKey) return res.status(500).json({ error: "Missing PRICE_API_KEY" });
+
+            const params = new URLSearchParams({
+              engine: "google_shopping",
+              q,
+              api_key: apiKey,
+              google_domain: "google.ca",
+              gl: "ca",
+              hl: "en",
+              location: "Ottawa, Ontario, Canada",
+            });
+
+            const url = `https://serpapi.com/search?${params.toString()}`;
+            const resp = await fetch(url, { method: "GET" });
+
+            if (!resp.ok) {
+              const text = await resp.text();
+              return res.status(resp.status).json({ error: "SerpApi error", details: text });
+            }
+
+            const data = await resp.json();
+            const offers = toOffers(data).sort((a, b) => {
+              const pa = a.price_number ?? Number.MAX_SAFE_INTEGER;
+              const pb = b.price_number ?? Number.MAX_SAFE_INTEGER;
+              return pa - pb;
+            });
+
+            res.json({ query: q, count: offers.length, offers });
+          } catch (e) {
+            res.status(500).json({ error: "Server error", details: String(e.message || e) });
+          }
+        });
+
+        const port = Number(process.env.PORT || 3000);
+        app.listen(port, () => console.log(`Backend running on ${port}`));
+        ```
+
+      tools:
+        - tool_type: python
+          component_module: "src.Pricetracking_tool"
+          component_base_path: .
+          function_name: "serpapi_get_prices"
+          tool_config:
+            price_api_key: ${PRICE_API_KEY,}
+
+      session_service:
+        type: ${PERSISTENCE_TYPE, memory}
+        database_url: ${CUSTOM_AGENT_DATABASE_URL,}
+
+      artifact_service: *default_artifact_service
+
+      agent_card:
+        description: >
+          Price Tracking API - Provides an Express endpoint that calls SerpApi
+          Google Shopping and returns normalized offers. Use when the user asks
+          to set up price tracking or SerpApi-backed product lookup.
+        defaultInputModes: ["text"]
+        defaultOutputModes: ["text"]
+        skills:
+          - id: "price_tracking"
+            name: "Price Tracking"
+            description: "Builds or updates the SerpApi-backed price lookup API"
+
+      agent_card_publishing:
+        interval_seconds: 10
+
+      agent_discovery:
+        enabled: true
+
+      inter_agent_communication:
+        allow_list: ["OrchestratorAgent"]
+        request_timeout_seconds: 60
