@@ -1,0 +1,121 @@
+/* Header Layout */
+header {
+    background: linear-gradient(180deg, rgba(3, 5, 16, 0.95) 0%, rgba(5, 8, 21, 0.9) 100%);
+    backdrop-filter: blur(10px);
+    border-bottom: 2px solid var(--electric-blue);
+    box-shadow: 0 4px 20px rgba(0, 212, 255, 0.2);
+    padding: 1.5rem 2rem;
+    position: sticky;
+    top: 0;
+    z-index: 100;
+}
+
+.header-content {
+    max-width: 1400px;
+    margin: 0 auto;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+}
+
+nav {
+    display: flex;
+    gap: 2rem;
+    flex-wrap: wrap;
+}
+
+/* Main Container Layout */
+.main-container {
+    max-width: 1400px;
+    margin: 0 auto;
+    padding: 3rem 2rem;
+}
+
+/* AI Interface Layout */
+.ai-interface {
+    background: linear-gradient(135deg, rgba(5, 8, 21, 0.6) 0%, rgba(8, 10, 26, 0.6) 100%);
+    border: 1px solid var(--electric-blue);
+    border-radius: 20px;
+    padding: 2.5rem;
+    margin-bottom: 3rem;
+    box-shadow: 0 8px 32px rgba(0, 212, 255, 0.15), inset 0 0 60px rgba(0, 212, 255, 0.05);
+    position: relative;
+    overflow: hidden;
+}
+
+.interface-header {
+    text-align: center;
+    margin-bottom: 2.5rem;
+    position: relative;
+    z-index: 1;
+}
+
+.interface-content {
+    display: grid;
+    grid-template-columns: 1fr 1.2fr;
+    gap: 2.5rem;
+    position: relative;
+    z-index: 1;
+}
+
+/* AI Distribution Grid */
+.ai-distribution {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 1.5rem;
+}
+
+/* Results Section Layout */
+.results-section {
+    margin-top: 3rem;
+}
+
+.results-header {
+    text-align: center;
+    margin-bottom: 2rem;
+}
+
+.results-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 1.5rem;
+}
+
+/* Responsive Layout */
+@media (max-width: 1024px) {
+    .interface-content {
+        grid-template-columns: 1fr;
+    }
+
+    .ai-distribution {
+        grid-template-columns: repeat(2, 1fr);
+    }
+}
+
+@media (max-width: 768px) {
+    .header-content {
+        flex-direction: column;
+        gap: 1rem;
+    }
+
+    nav {
+        gap: 1rem;
+    }
+
+    .ai-distribution {
+        grid-template-columns: 1fr;
+    }
+
+    .results-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .main-container {
+        padding: 2rem 1rem;
+    }
+
+    .ai-interface {
+        padding: 1.5rem;
+    }
+}
