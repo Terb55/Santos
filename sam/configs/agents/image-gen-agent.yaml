@@ -1,0 +1,85 @@
+log:
+  stdout_log_level: INFO
+
+!include ../shared_config.yaml
+
+# =============================================================================
+# IMAGE GENERATION AGENT
+# =============================================================================
+# This agent uses Google's Gemini models to generate images.
+# It uses the API Key provided in GEMINI_API_KEY.
+# =============================================================================
+
+apps:
+  - name: image-gen-agent_app
+    app_base_path: .
+    app_module: solace_agent_mesh.agent.sac.app
+
+    broker:
+      <<: *broker_connection
+
+    app_config:
+      namespace: ${NAMESPACE, sam/}
+      supports_streaming: true
+      agent_name: "ImageGenerationAgent"
+      display_name: "Visual Artist (Gemini)"
+      
+      # Override the default model to use Gemini for the brain as well
+      model:
+        model: "gemini-2.5-flash-image"
+        api_base: "https://generativelanguage.googleapis.com"
+        api_key: "${GEMINI_API_KEY}"
+
+      instruction: |
+        You are a Visual Artist and Image Generation Specialist.
+        Your goal is to create stunning visual assets based on user descriptions.
+
+        CAPABILITIES:
+        - Generate images from text prompts using the `generate_image` tool.
+        - Refine prompts to be more descriptive and artistic before generation.
+
+        GUIDELINES:
+        1. When a user asks for an image, first enhance their prompt to include style, lighting, and detail.
+        2. Use the `generate_image` tool to create the image.
+        3. Present the generated image path to the user (file path).
+        4. If generation fails, explain why and suggest a different prompt.
+
+      tools:
+        # Image Generation Tool
+        - tool_type: python
+          component_module: "src.image_tools"
+          component_base_path: .
+          function_name: "generate_image"
+          tool_config:
+            api_key: "${GEMINI_API_KEY}"
+
+        # Built-in artifact tools
+        - tool_type: builtin-group
+          group_name: artifact_management
+
+      session_service:
+        type: ${PERSISTENCE_TYPE, memory}
+        database_url: ${CUSTOM_AGENT_DATABASE_URL,}
+
+      artifact_service: *default_artifact_service
+
+      agent_card:
+        description: >
+          Visual Artist (Gemini) - Generates images using Google's Imagen models.
+          Use this agent to create logos, illustrations, or photorealistic images.
+        defaultInputModes: ["text"]
+        defaultOutputModes: ["text", "file"]
+        skills:
+          - id: "generate_image"
+            name: "Generate Image"
+            description: "Create an image from a text description"
+
+      agent_card_publishing:
+        interval_seconds: 10
+
+      agent_discovery:
+        enabled: true
+
+      inter_agent_communication:
+        allow_list: ["OrchestratorAgent"]
+        request_timeout_seconds: 60
