@@ -1,0 +1,618 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Santos Part Picker - Automated PC Building Intelligence</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Exo:wght@300;400;600&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --navy-dark: #030510;
+            --navy-mid: #050815;
+            --navy-light: #080a1a;
+            --midnight-blue: #0a0f1f;
+            --electric-blue: #00d4ff;
+            --cyan: #00ffff;
+            --cyan-dark: #0099cc;
+            --glow-blue: rgba(0, 212, 255, 0.5);
+            --glow-cyan: rgba(0, 255, 255, 0.3);
+        }
+
+        body {
+            font-family: 'Exo', sans-serif;
+            background: linear-gradient(135deg, var(--navy-dark) 0%, var(--midnight-blue) 50%, var(--navy-dark) 100%);
+            background-attachment: fixed;
+            color: #e0e0e0;
+            min-height: 100vh;
+            line-height: 1.6;
+        }
+
+        /* Header Styles */
+        header {
+            background: linear-gradient(180deg, rgba(3, 5, 16, 0.95) 0%, rgba(5, 8, 21, 0.9) 100%);
+            backdrop-filter: blur(10px);
+            border-bottom: 2px solid var(--electric-blue);
+            box-shadow: 0 4px 20px rgba(0, 212, 255, 0.2);
+            padding: 1.5rem 2rem;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+        .header-content {
+            max-width: 1400px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+        }
+
+        .logo-section h1 {
+            font-family: 'Orbitron', sans-serif;
+            font-weight: 900;
+            font-size: 2rem;
+            text-transform: uppercase;
+            color: var(--electric-blue);
+            text-shadow: 0 0 20px var(--glow-blue), 0 0 40px var(--glow-blue);
+            letter-spacing: 2px;
+            margin-bottom: 0.25rem;
+        }
+
+        .logo-section p {
+            font-size: 0.9rem;
+            color: var(--cyan);
+            font-weight: 300;
+            letter-spacing: 1px;
+        }
+
+        .solana-badge {
+            display: inline-block;
+            font-size: 0.75rem;
+            color: var(--electric-blue);
+            background: rgba(0, 212, 255, 0.1);
+            border: 1px solid var(--electric-blue);
+            border-radius: 6px;
+            padding: 0.3rem 0.6rem;
+            margin-top: 0.5rem;
+            font-family: 'Orbitron', sans-serif;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 1.5px;
+            box-shadow: 0 0 10px rgba(0, 212, 255, 0.3);
+        }
+
+        nav {
+            display: flex;
+            gap: 2rem;
+            flex-wrap: wrap;
+        }
+
+        nav a {
+            color: #e0e0e0;
+            text-decoration: none;
+            font-weight: 600;
+            font-size: 0.95rem;
+            padding: 0.5rem 1rem;
+            border-radius: 8px;
+            transition: all 0.3s ease;
+            position: relative;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        nav a::before {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 0;
+            height: 2px;
+            background: var(--electric-blue);
+            transition: width 0.3s ease;
+        }
+
+        nav a:hover {
+            color: var(--electric-blue);
+            text-shadow: 0 0 10px var(--glow-blue);
+        }
+
+        nav a:hover::before {
+            width: 80%;
+        }
+
+        /* Main Container */
+        .main-container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 3rem 2rem;
+        }
+
+        /* AI Command Interface Section */
+        .ai-interface {
+            background: linear-gradient(135deg, rgba(5, 8, 21, 0.6) 0%, rgba(8, 10, 26, 0.6) 100%);
+            border: 1px solid var(--electric-blue);
+            border-radius: 20px;
+            padding: 2.5rem;
+            margin-bottom: 3rem;
+            box-shadow: 0 8px 32px rgba(0, 212, 255, 0.15), inset 0 0 60px rgba(0, 212, 255, 0.05);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .ai-interface::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: radial-gradient(circle, rgba(0, 212, 255, 0.1) 0%, transparent 70%);
+            animation: pulse 8s ease-in-out infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% { opacity: 0.3; transform: scale(1); }
+            50% { opacity: 0.6; transform: scale(1.1); }
+        }
+
+        .interface-header {
+            text-align: center;
+            margin-bottom: 2.5rem;
+            position: relative;
+            z-index: 1;
+        }
+
+        .interface-header h2 {
+            font-family: 'Orbitron', sans-serif;
+            font-weight: 700;
+            font-size: 2rem;
+            text-transform: uppercase;
+            color: var(--electric-blue);
+            text-shadow: 0 0 15px var(--glow-blue);
+            margin-bottom: 0.5rem;
+            letter-spacing: 3px;
+        }
+
+        .interface-content {
+            display: grid;
+            grid-template-columns: 1fr 1.2fr;
+            gap: 2.5rem;
+            position: relative;
+            z-index: 1;
+        }
+
+        /* Left Panel - User Interaction */
+        .user-panel {
+            background: linear-gradient(135deg, rgba(3, 5, 16, 0.8) 0%, rgba(5, 8, 21, 0.8) 100%);
+            border: 1px solid var(--cyan);
+            border-radius: 15px;
+            padding: 2rem;
+            box-shadow: 0 4px 20px rgba(0, 255, 255, 0.1);
+        }
+
+        .user-panel h3 {
+            font-family: 'Orbitron', sans-serif;
+            font-weight: 700;
+            font-size: 1.3rem;
+            text-transform: uppercase;
+            color: var(--cyan);
+            margin-bottom: 1.5rem;
+            text-align: center;
+            letter-spacing: 2px;
+        }
+
+        .chat-input {
+            width: 100%;
+            min-height: 200px;
+            background: rgba(3, 5, 16, 0.6);
+            border: 2px solid var(--electric-blue);
+            border-radius: 10px;
+            padding: 1.2rem;
+            color: #e0e0e0;
+            font-family: 'Exo', sans-serif;
+            font-size: 1rem;
+            resize: vertical;
+            margin-bottom: 1.5rem;
+            transition: all 0.3s ease;
+        }
+
+        .chat-input:focus {
+            outline: none;
+            border-color: var(--cyan);
+            box-shadow: 0 0 20px var(--glow-cyan), inset 0 0 20px rgba(0, 255, 255, 0.1);
+        }
+
+        .chat-input::placeholder {
+            color: rgba(224, 224, 224, 0.5);
+        }
+
+        .analyze-btn {
+            width: 100%;
+            padding: 1.2rem;
+            background: linear-gradient(135deg, var(--electric-blue) 0%, var(--cyan) 100%);
+            border: none;
+            border-radius: 10px;
+            color: var(--navy-dark);
+            font-family: 'Orbitron', sans-serif;
+            font-weight: 700;
+            font-size: 1.1rem;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 15px rgba(0, 212, 255, 0.4);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .analyze-btn::before {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 0;
+            height: 0;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.3);
+            transform: translate(-50%, -50%);
+            transition: width 0.6s, height 0.6s;
+        }
+
+        .analyze-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 25px rgba(0, 212, 255, 0.6), 0 0 30px var(--glow-blue);
+        }
+
+        .analyze-btn:hover::before {
+            width: 300px;
+            height: 300px;
+        }
+
+        .analyze-btn:active {
+            transform: translateY(0);
+        }
+
+        /* Right Panel - AI Task Distribution */
+        .ai-distribution {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 1.5rem;
+        }
+
+        .ai-card {
+            background: linear-gradient(135deg, rgba(3, 5, 16, 0.9) 0%, rgba(5, 8, 21, 0.9) 100%);
+            border: 2px solid var(--electric-blue);
+            border-radius: 12px;
+            padding: 1.5rem;
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+            box-shadow: 0 4px 15px rgba(0, 212, 255, 0.1);
+        }
+
+        .ai-card::before {
+            content: '';
+            position: absolute;
+            top: -2px;
+            left: -2px;
+            right: -2px;
+            bottom: -2px;
+            background: linear-gradient(45deg, var(--electric-blue), var(--cyan), var(--electric-blue));
+            border-radius: 12px;
+            opacity: 0;
+            z-index: -1;
+            transition: opacity 0.3s ease;
+            animation: borderGlow 3s ease-in-out infinite;
+        }
+
+        @keyframes borderGlow {
+            0%, 100% { opacity: 0.3; }
+            50% { opacity: 0.6; }
+        }
+
+        .ai-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 30px rgba(0, 212, 255, 0.3), 0 0 40px var(--glow-blue);
+            border-color: var(--cyan);
+        }
+
+        .ai-card:hover::before {
+            opacity: 0.8;
+        }
+
+        .ai-icon {
+            width: 50px;
+            height: 50px;
+            background: linear-gradient(135deg, var(--electric-blue), var(--cyan));
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 1rem;
+            font-size: 1.5rem;
+            box-shadow: 0 0 20px var(--glow-blue);
+        }
+
+        .ai-card h4 {
+            font-family: 'Orbitron', sans-serif;
+            font-weight: 700;
+            font-size: 1rem;
+            text-transform: uppercase;
+            color: var(--electric-blue);
+            margin-bottom: 0.5rem;
+            letter-spacing: 1px;
+        }
+
+        .ai-card p {
+            font-size: 0.85rem;
+            color: rgba(224, 224, 224, 0.8);
+            margin-bottom: 0.75rem;
+            line-height: 1.4;
+        }
+
+        .status-indicator {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            font-size: 0.75rem;
+            text-transform: uppercase;
+            font-weight: 600;
+            color: var(--cyan);
+        }
+
+        .status-dot {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            background: var(--cyan);
+            box-shadow: 0 0 10px var(--cyan);
+            animation: statusPulse 2s ease-in-out infinite;
+        }
+
+        @keyframes statusPulse {
+            0%, 100% { opacity: 1; transform: scale(1); }
+            50% { opacity: 0.5; transform: scale(0.8); }
+        }
+
+        /* Results Section */
+        .results-section {
+            margin-top: 3rem;
+        }
+
+        .results-header {
+            text-align: center;
+            margin-bottom: 2rem;
+        }
+
+        .results-header h2 {
+            font-family: 'Orbitron', sans-serif;
+            font-weight: 700;
+            font-size: 1.8rem;
+            text-transform: uppercase;
+            color: var(--electric-blue);
+            text-shadow: 0 0 15px var(--glow-blue);
+            letter-spacing: 3px;
+        }
+
+        .results-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 1.5rem;
+        }
+
+        .result-card {
+            background: linear-gradient(135deg, rgba(5, 8, 21, 0.7) 0%, rgba(8, 10, 26, 0.7) 100%);
+            border: 1px solid var(--electric-blue);
+            border-radius: 12px;
+            padding: 1.5rem;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 15px rgba(0, 212, 255, 0.1);
+        }
+
+        .result-card:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 6px 25px rgba(0, 212, 255, 0.2), 0 0 30px var(--glow-blue);
+            border-color: var(--cyan);
+        }
+
+        .result-card h3 {
+            font-family: 'Orbitron', sans-serif;
+            font-weight: 700;
+            font-size: 1.1rem;
+            text-transform: uppercase;
+            color: var(--cyan);
+            margin-bottom: 1rem;
+            letter-spacing: 1px;
+            border-bottom: 1px solid rgba(0, 212, 255, 0.3);
+            padding-bottom: 0.5rem;
+        }
+
+        .result-card .placeholder {
+            color: rgba(224, 224, 224, 0.6);
+            font-style: italic;
+            font-size: 0.9rem;
+            line-height: 1.6;
+        }
+
+        .result-card .value {
+            color: var(--electric-blue);
+            font-weight: 600;
+            font-size: 1.2rem;
+            margin-top: 0.5rem;
+        }
+
+        /* Responsive Design */
+        @media (max-width: 1024px) {
+            .interface-content {
+                grid-template-columns: 1fr;
+            }
+
+            .ai-distribution {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+
+        @media (max-width: 768px) {
+            .header-content {
+                flex-direction: column;
+                gap: 1rem;
+            }
+
+            nav {
+                gap: 1rem;
+            }
+
+            .ai-distribution {
+                grid-template-columns: 1fr;
+            }
+
+            .results-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .main-container {
+                padding: 2rem 1rem;
+            }
+
+            .ai-interface {
+                padding: 1.5rem;
+            }
+        }
+
+        /* Divider with neon accent */
+        .divider {
+            height: 1px;
+            background: linear-gradient(90deg, transparent, var(--electric-blue), transparent);
+            margin: 2rem 0;
+            box-shadow: 0 0 10px var(--glow-blue);
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="header-content">
+            <div class="logo-section">
+                <h1>Santos Part Picker</h1>
+                <p>Automated PC Building Intelligence</p>
+                <span class="solana-badge">Powered by Solana Agent Mesh</span>
+            </div>
+            <nav>
+                <a href="#builder">Builder</a>
+                <a href="#dashboard">AI Dashboard</a>
+                <a href="#pricewatch">Price Watch</a>
+                <a href="#builds">My Builds</a>
+            </nav>
+        </div>
+    </header>
+
+    <main class="main-container">
+        <section class="ai-interface">
+            <div class="interface-header">
+                <h2>AI Command Interface</h2>
+            </div>
+            <div class="interface-content">
+                <div class="user-panel">
+                    <h3>Main AI Assistant</h3>
+                    <textarea 
+                        class="chat-input" 
+                        placeholder="Describe your PC build goals (gaming, budget, performance, aesthetics…)"
+                        rows="8"
+                    ></textarea>
+                    <button class="analyze-btn">Analyze Build</button>
+                </div>
+
+                <div class="ai-distribution">
+                    <div class="ai-card">
+                        <div class="ai-icon">🎨</div>
+                        <h4>Image Generation AI</h4>
+                        <p>Creates visual representations of your build</p>
+                        <div class="status-indicator">
+                            <span class="status-dot"></span>
+                            <span>Idle</span>
+                        </div>
+                    </div>
+
+                    <div class="ai-card">
+                        <div class="ai-icon">⚙️</div>
+                        <h4>Compatibility AI</h4>
+                        <p>Ensures all selected components work together</p>
+                        <div class="status-indicator">
+                            <span class="status-dot"></span>
+                            <span>Idle</span>
+                        </div>
+                    </div>
+
+                    <div class="ai-card">
+                        <div class="ai-icon">💰</div>
+                        <h4>Price Tracking AI</h4>
+                        <p>Monitors live market pricing and deals</p>
+                        <div class="status-indicator">
+                            <span class="status-dot"></span>
+                            <span>Idle</span>
+                        </div>
+                    </div>
+
+                    <div class="ai-card">
+                        <div class="ai-icon">📊</div>
+                        <h4>Price-Performance AI</h4>
+                        <p>Balances cost versus performance efficiency</p>
+                        <div class="status-indicator">
+                            <span class="status-dot"></span>
+                            <span>Idle</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <div class="divider"></div>
+
+        <section class="results-section">
+            <div class="results-header">
+                <h2>Build Analysis Results</h2>
+            </div>
+            <div class="results-grid">
+                <div class="result-card">
+                    <h3>Selected Parts List</h3>
+                    <div class="placeholder">
+                        Components will appear here after analysis...
+                    </div>
+                </div>
+
+                <div class="result-card">
+                    <h3>Compatibility Summary</h3>
+                    <div class="placeholder">
+                        Compatibility status will be displayed here...
+                    </div>
+                </div>
+
+                <div class="result-card">
+                    <h3>Performance Score</h3>
+                    <div class="placeholder">
+                        Performance rating pending...
+                    </div>
+                    <div class="value">-- / 100</div>
+                </div>
+
+                <div class="result-card">
+                    <h3>Estimated Total Cost</h3>
+                    <div class="placeholder">
+                        Price calculation in progress...
+                    </div>
+                    <div class="value">$0.00</div>
+                </div>
+            </div>
+        </section>
+    </main>
+</body>
+</html>
