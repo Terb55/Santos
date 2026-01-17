@@ -1,0 +1,95 @@
+log:
+  stdout_log_level: INFO
+
+!include ../shared_config.yaml
+
+# =============================================================================
+# LEVEL 2: COMPATIBILITY AGENT (Tool-Enabled)
+# =============================================================================
+# This agent specializes in verifying PC component compatibility.
+# It leverages the PC PartPicker API to ensure parts work together.
+#
+# Example usage:
+#   "Check if the Ryzen 7 7800X3D is compatible with the MSI B650 Tomahawk"
+#   "Will the RTX 4090 fit in a Corsair 4000D Airflow?"
+# =============================================================================
+
+apps:
+  - name: compatibility-agent_app
+    app_base_path: .
+    app_module: solace_agent_mesh.agent.sac.app
+
+    broker:
+      <<: *broker_connection
+
+    app_config:
+      namespace: ${NAMESPACE, sam/}
+      supports_streaming: true
+      agent_name: "CompatibilityAgent"
+      display_name: "Component Compatibility Verifier"
+      model: *general_model
+
+      instruction: |
+        You are an expert PC Builder and Compatibility Verification Agent.
+        Your primary goal is to ensure that computer components selected by the user are compatible with each other.
+
+        CAPABILITIES:
+        - Validate CPU and Motherboard socket compatibility
+        - Check RAM compatibility (generation, speed, clearance)
+        - Verify GPU physical dimensions against Case constraints
+        - Calculate Power Supply requirements
+        - Use the `pcpartpicker_check` tool to validate parts against the PC PartPicker database
+
+        GUIDELINES:
+        1. Always check for physical constraints (Case GPU length vs GPU length, CPU Cooler height vs Case clearance).
+        2. Verify electronic compatibility (Socket type, Chipset, DDR4 vs DDR5).
+        3. Warn about potential issues (BIOS updates needed, blocked drive bays).
+        4. If the tool returns a compatibility warning, explain it clearly to the user.
+        5. If parts are fully compatible, confirm it with confidence.
+
+        EXAMPLE RESPONSES:
+        - "✅ Compatible: The Ryzen 7 7800X3D works perfectly with the MSI B650 Tomahawk WiFi (AM5 socket)."
+        - "⚠️ Warning: The ASUS ROG Strix 4090 (357.6mm) is too long for the Corsair 4000D (360mm max). It will be an extremely tight fit and front fans may need removal."
+
+      tools:
+        # PC PartPicker Tool Integration
+        - tool_type: python
+          component_module: "src.pc_tools"
+          component_base_path: .
+          function_name: "pcpartpicker_check"
+          tool_config:
+            api_key: ${PCPARTPICKER_API_KEY,}
+
+        # Built-in artifact tools (optional, if report generation is needed)
+        - tool_type: builtin-group
+          group_name: artifact_management
+
+      session_service:
+        type: ${PERSISTENCE_TYPE, memory}
+        database_url: ${CUSTOM_AGENT_DATABASE_URL,}
+
+      artifact_service: *default_artifact_service
+
+      agent_card:
+        description: >
+          Component Compatibility Verifier - Checks compatibility between PC components using PC PartPicker data.
+          Use this agent to validate build lists, check clearance, and avoid hardware conflicts.
+        defaultInputModes: ["text"]
+        defaultOutputModes: ["text"]
+        skills:
+          - id: "check_compatibility"
+            name: "Check Compatibility"
+            description: "Verifies if two or more PC components are compatible"
+          - id: "power_calc"
+            name: "Power Calculation"
+            description: "Estimates TDP and suggests PSU wattage"
+
+      agent_card_publishing:
+        interval_seconds: 10
+
+      agent_discovery:
+        enabled: true
+
+      inter_agent_communication:
+        allow_list: ["OrchestratorAgent"]
+        request_timeout_seconds: 60
