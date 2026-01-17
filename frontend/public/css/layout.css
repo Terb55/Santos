@@ -1,121 +1,423 @@
-/* Header Layout */
-header {
-    background: linear-gradient(180deg, rgba(3, 5, 16, 0.95) 0%, rgba(5, 8, 21, 0.9) 100%);
-    backdrop-filter: blur(10px);
-    border-bottom: 2px solid var(--electric-blue);
-    box-shadow: 0 4px 20px rgba(0, 212, 255, 0.2);
-    padding: 1.5rem 2rem;
-    position: sticky;
-    top: 0;
-    z-index: 100;
-}
+/**
+ * layout.css
+ * 
+ * Structural layout styles: containers, sections, grids, and navigation.
+ * Handles the overall page structure and responsive behavior.
+ */
 
-.header-content {
-    max-width: 1400px;
-    margin: 0 auto;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    flex-wrap: wrap;
-}
-
-nav {
-    display: flex;
-    gap: 2rem;
-    flex-wrap: wrap;
-}
-
-/* Main Container Layout */
-.main-container {
-    max-width: 1400px;
-    margin: 0 auto;
-    padding: 3rem 2rem;
-}
-
-/* AI Interface Layout */
-.ai-interface {
-    background: linear-gradient(135deg, rgba(5, 8, 21, 0.6) 0%, rgba(8, 10, 26, 0.6) 100%);
-    border: 1px solid var(--electric-blue);
-    border-radius: 20px;
-    padding: 2.5rem;
-    margin-bottom: 3rem;
-    box-shadow: 0 8px 32px rgba(0, 212, 255, 0.15), inset 0 0 60px rgba(0, 212, 255, 0.05);
-    position: relative;
+/* ============================================
+   Ambient Background
+   Creates depth with subtle gradient orbs
+   ============================================ */
+.ambient-background {
+    position: fixed;
+    inset: 0;
+    z-index: var(--z-base);
+    pointer-events: none;
     overflow: hidden;
 }
 
-.interface-header {
+/* Gradient orbs create ambient depth - positions shift based on user interaction */
+.gradient-orb {
+    position: absolute;
+    border-radius: 50%;
+    filter: blur(80px);
+    opacity: 0.4;
+    transition: transform var(--duration-slower) var(--ease-out),
+                opacity var(--duration-slower) var(--ease-out);
+}
+
+.orb-1 {
+    width: 600px;
+    height: 600px;
+    background: linear-gradient(135deg, var(--primary-400), var(--accent-cyan));
+    top: -200px;
+    right: -100px;
+}
+
+.orb-2 {
+    width: 500px;
+    height: 500px;
+    background: linear-gradient(135deg, var(--accent-violet), var(--primary-500));
+    bottom: -150px;
+    left: -100px;
+}
+
+.orb-3 {
+    width: 400px;
+    height: 400px;
+    background: linear-gradient(135deg, var(--accent-emerald), var(--accent-cyan));
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    opacity: 0.2;
+}
+
+[data-theme="dark"] .gradient-orb {
+    opacity: 0.3;
+    filter: blur(100px);
+}
+
+/* Subtle grid overlay for texture */
+.grid-overlay {
+    position: absolute;
+    inset: 0;
+    background-image: 
+        linear-gradient(var(--border-subtle) 1px, transparent 1px),
+        linear-gradient(90deg, var(--border-subtle) 1px, transparent 1px);
+    background-size: 60px 60px;
+    opacity: 0.3;
+}
+
+[data-theme="dark"] .grid-overlay {
+    opacity: 0.1;
+}
+
+/* ============================================
+   Main Application Container
+   ============================================ */
+.app-container {
+    position: relative;
+    z-index: var(--z-above);
+    min-height: 100vh;
+}
+
+/* ============================================
+   Section Base Styles
+   Sections transition with slide + fade
+   ============================================ */
+.section {
+    position: absolute;
+    inset: 0;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    opacity: 0;
+    visibility: hidden;
+    transform: translateY(20px);
+    transition: 
+        opacity var(--duration-slow) var(--ease-out),
+        transform var(--duration-slow) var(--ease-out),
+        visibility 0ms var(--duration-slow);
+}
+
+.section.active {
+    position: relative;
+    opacity: 1;
+    visibility: visible;
+    transform: translateY(0);
+    transition: 
+        opacity var(--duration-slow) var(--ease-out),
+        transform var(--duration-slow) var(--ease-out),
+        visibility 0ms;
+}
+
+/* Directional transitions for forward/back navigation */
+.section.slide-out-left {
+    transform: translateX(-30px);
+    opacity: 0;
+}
+
+.section.slide-in-right {
+    transform: translateX(30px);
+}
+
+.section.slide-in-right.active {
+    transform: translateX(0);
+}
+
+/* ============================================
+   Navigation
+   ============================================ */
+.nav {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    z-index: var(--z-sticky);
+    display: flex;
+    align-items: center;
+    gap: var(--space-6);
+    padding: var(--space-4) var(--space-8);
+    background: linear-gradient(
+        to bottom,
+        var(--bg-primary),
+        transparent
+    );
+}
+
+.nav-brand {
+    display: flex;
+    align-items: center;
+    gap: var(--space-3);
+}
+
+.brand-icon {
+    width: 36px;
+    height: 36px;
+    color: var(--primary-500);
+}
+
+.brand-text {
+    font-family: var(--font-display);
+    font-size: var(--text-xl);
+    font-weight: var(--font-bold);
+    color: var(--text-primary);
+}
+
+/* Landing Page Navigation Links */
+.landing-nav {
+    display: flex;
+    align-items: center;
+    gap: var(--space-1);
+    margin-left: auto;
+    margin-right: var(--space-4);
+}
+
+.landing-nav-link {
+    display: flex;
+    align-items: center;
+    gap: var(--space-2);
+    padding: var(--space-2) var(--space-4);
+    font-size: var(--text-sm);
+    font-weight: var(--font-medium);
+    color: var(--text-secondary);
+    border-radius: var(--radius-lg);
+    transition: 
+        color var(--duration-fast) var(--ease-out),
+        background var(--duration-fast) var(--ease-out);
+}
+
+.landing-nav-link:hover {
+    color: var(--text-primary);
+    background: var(--bg-tertiary);
+}
+
+.landing-nav-link svg {
+    width: 18px;
+    height: 18px;
+}
+
+@media (max-width: 968px) {
+    .landing-nav {
+        display: none;
+    }
+}
+
+/* Theme Toggle Button */
+.theme-toggle {
+    width: 44px;
+    height: 44px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: var(--radius-lg);
+    background: var(--bg-secondary);
+    border: 1px solid var(--border-default);
+    transition: 
+        background var(--duration-fast) var(--ease-out),
+        border-color var(--duration-fast) var(--ease-out),
+        transform var(--duration-fast) var(--ease-spring);
+}
+
+.theme-toggle:hover {
+    background: var(--bg-tertiary);
+    border-color: var(--border-strong);
+    transform: scale(1.05);
+}
+
+.theme-toggle svg {
+    width: 20px;
+    height: 20px;
+    transition: opacity var(--duration-fast) var(--ease-out);
+}
+
+.theme-toggle .icon-sun {
+    display: block;
+}
+
+.theme-toggle .icon-moon {
+    display: none;
+}
+
+[data-theme="dark"] .theme-toggle .icon-sun {
+    display: none;
+}
+
+[data-theme="dark"] .theme-toggle .icon-moon {
+    display: block;
+}
+
+/* ============================================
+   Step Container
+   Centered content area for wizard steps
+   ============================================ */
+.step-container {
+    max-width: 900px;
+    width: 100%;
+    margin: 0 auto;
+    padding: var(--space-24) var(--space-6) var(--space-12);
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+}
+
+.step-header {
     text-align: center;
-    margin-bottom: 2.5rem;
-    position: relative;
-    z-index: 1;
+    margin-bottom: var(--space-12);
 }
 
-.interface-content {
+/* Progress Indicator */
+.step-progress {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: var(--space-3);
+    margin-bottom: var(--space-8);
+}
+
+.progress-bar {
+    width: 200px;
+    height: 4px;
+    background: var(--border-default);
+    border-radius: var(--radius-full);
+    overflow: hidden;
+}
+
+.progress-fill {
+    height: 100%;
+    width: var(--progress);
+    background: linear-gradient(90deg, var(--primary-500), var(--accent-cyan));
+    border-radius: var(--radius-full);
+    transition: width var(--duration-slow) var(--ease-out);
+}
+
+.progress-text {
+    font-size: var(--text-sm);
+    color: var(--text-tertiary);
+    font-weight: var(--font-medium);
+    letter-spacing: var(--tracking-wide);
+    text-transform: uppercase;
+}
+
+.step-title {
+    font-size: var(--text-3xl);
+    margin-bottom: var(--space-4);
+}
+
+.step-description {
+    font-size: var(--text-lg);
+    max-width: 600px;
+    margin: 0 auto;
+}
+
+/* Step Navigation */
+.step-navigation {
+    display: flex;
+    justify-content: space-between;
+    margin-top: auto;
+    padding-top: var(--space-8);
+}
+
+/* ============================================
+   Options Grid
+   Flexible grid for selection cards
+   ============================================ */
+.options-grid {
     display: grid;
-    grid-template-columns: 1fr 1.2fr;
-    gap: 2.5rem;
-    position: relative;
-    z-index: 1;
+    grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+    gap: var(--space-4);
+    flex: 1;
 }
 
-/* AI Distribution Grid */
-.ai-distribution {
-    display: grid;
-    grid-template-columns: repeat(2, 1fr);
-    gap: 1.5rem;
-}
-
-/* Results Section Layout */
-.results-section {
-    margin-top: 3rem;
+/* ============================================
+   Results Grid Layout
+   ============================================ */
+.results-container {
+    max-width: 1200px;
+    width: 100%;
+    margin: 0 auto;
+    padding: var(--space-24) var(--space-6) var(--space-12);
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
 }
 
 .results-header {
     text-align: center;
-    margin-bottom: 2rem;
+    margin-bottom: var(--space-10);
 }
 
 .results-grid {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-    gap: 1.5rem;
+    grid-template-columns: 1fr 380px;
+    gap: var(--space-6);
+    flex: 1;
 }
 
-/* Responsive Layout */
 @media (max-width: 1024px) {
-    .interface-content {
-        grid-template-columns: 1fr;
-    }
-
-    .ai-distribution {
-        grid-template-columns: repeat(2, 1fr);
-    }
-}
-
-@media (max-width: 768px) {
-    .header-content {
-        flex-direction: column;
-        gap: 1rem;
-    }
-
-    nav {
-        gap: 1rem;
-    }
-
-    .ai-distribution {
-        grid-template-columns: 1fr;
-    }
-
     .results-grid {
         grid-template-columns: 1fr;
     }
+}
 
-    .main-container {
-        padding: 2rem 1rem;
+.results-navigation {
+    display: flex;
+    justify-content: center;
+    gap: var(--space-4);
+    margin-top: var(--space-10);
+}
+
+/* ============================================
+   Analyzing Section Layout
+   ============================================ */
+.analyzing-container {
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: var(--space-8);
+    gap: var(--space-10);
+}
+
+/* ============================================
+   Responsive Adjustments
+   ============================================ */
+@media (max-width: 768px) {
+    .nav {
+        padding: var(--space-3) var(--space-4);
     }
+    
+    .step-container {
+        padding: var(--space-20) var(--space-4) var(--space-8);
+    }
+    
+    .step-title {
+        font-size: var(--text-2xl);
+    }
+    
+    .options-grid {
+        grid-template-columns: 1fr;
+    }
+    
+    .step-navigation {
+        flex-direction: column-reverse;
+        gap: var(--space-3);
+    }
+    
+    .step-navigation .btn {
+        width: 100%;
+        justify-content: center;
+    }
+    
+    .results-container {
+        padding: var(--space-20) var(--space-4) var(--space-8);
+    }
+}
 
-    .ai-interface {
-        padding: 1.5rem;
+@media (max-width: 480px) {
+    .brand-text {
+        font-size: var(--text-lg);
     }
 }

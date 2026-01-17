@@ -1,0 +1,279 @@
+/**
+ * sections.css
+ * 
+ * Section-specific styles for Landing, Steps, Analyzing, and Results.
+ * Each section has unique layout and visual treatment.
+ */
+
+/* ============================================
+   Landing Section
+   Hero area with split content/visual layout
+   ============================================ */
+.section-landing {
+    display: flex;
+    flex-direction: column;
+}
+
+/* Landing Hero for page-container layout (index.html) */
+.landing-hero {
+    min-height: calc(100vh - var(--header-height, 80px));
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    padding: var(--space-8) 0;
+    position: relative;
+}
+
+.landing-content {
+    flex: 1;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    align-items: center;
+    gap: var(--space-12);
+    max-width: 1400px;
+    margin: 0 auto;
+    padding: var(--space-24) var(--space-8);
+    width: 100%;
+}
+
+.landing-text {
+    max-width: 560px;
+}
+
+.landing-title {
+    font-size: clamp(var(--text-4xl), 5vw, var(--text-6xl));
+    margin-bottom: var(--space-6);
+    line-height: 1.05;
+}
+
+.title-accent {
+    background: linear-gradient(
+        135deg,
+        var(--primary-500),
+        var(--accent-cyan)
+    );
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+}
+
+.landing-subtitle {
+    font-size: var(--text-lg);
+    line-height: var(--leading-relaxed);
+    margin-bottom: var(--space-8);
+    max-width: 480px;
+}
+
+.landing-visual {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+}
+
+/* Responsive adjustments */
+@media (max-width: 968px) {
+    .landing-content {
+        grid-template-columns: 1fr;
+        text-align: center;
+        padding-top: var(--space-20);
+    }
+    
+    .landing-text {
+        max-width: 100%;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+    }
+    
+    .landing-subtitle {
+        max-width: 500px;
+    }
+    
+    .landing-visual {
+        order: -1;
+    }
+    
+    .pc-visualization {
+        transform: scale(0.8);
+    }
+}
+
+@media (max-width: 480px) {
+    .landing-content {
+        padding: var(--space-16) var(--space-4);
+    }
+    
+    .landing-title {
+        font-size: var(--text-3xl);
+    }
+    
+    .landing-subtitle {
+        font-size: var(--text-base);
+    }
+    
+    .pc-visualization {
+        transform: scale(0.6);
+    }
+}
+
+/* ============================================
+   Step Sections
+   Consistent wizard step layout
+   ============================================ */
+.section-step {
+    background: var(--bg-primary);
+}
+
+/* Step content fade during transitions */
+.section-step .step-container {
+    transition: opacity var(--duration-base) var(--ease-out);
+}
+
+.section-step.transitioning .step-container {
+    opacity: 0.5;
+}
+
+/* ============================================
+   Budget Section Specifics
+   ============================================ */
+#sectionBudget .step-container {
+    max-width: 700px;
+}
+
+/* ============================================
+   Priorities Section Specifics
+   ============================================ */
+#sectionPriorities .step-container {
+    max-width: 700px;
+}
+
+/* ============================================
+   Analyzing Section
+   Full-screen processing state
+   ============================================ */
+.section-analyzing {
+    background: var(--bg-primary);
+}
+
+.section-analyzing .analyzing-container {
+    opacity: 0;
+    transform: scale(0.95);
+    transition: 
+        opacity var(--duration-base) var(--ease-out),
+        transform var(--duration-base) var(--ease-out);
+}
+
+.section-analyzing.active .analyzing-container {
+    opacity: 1;
+    transform: scale(1);
+}
+
+/* ============================================
+   Results Section
+   Reveal and celebration state
+   ============================================ */
+.section-results {
+    background: var(--bg-primary);
+}
+
+/* Subtle celebratory effect on results load */
+.section-results::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 600px;
+    height: 400px;
+    background: radial-gradient(
+        ellipse at center,
+        var(--glow-primary),
+        transparent 70%
+    );
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity var(--duration-slower) var(--ease-out);
+}
+
+.section-results.active::before {
+    opacity: 0.5;
+}
+
+[data-theme="dark"] .section-results.active::before {
+    opacity: 0.3;
+}
+
+/* ============================================
+   Empty States & Loading States
+   ============================================ */
+.loading-skeleton {
+    background: linear-gradient(
+        90deg,
+        var(--bg-tertiary) 25%,
+        var(--bg-secondary) 50%,
+        var(--bg-tertiary) 75%
+    );
+    background-size: 200% 100%;
+    animation: shimmer 1.5s infinite;
+    border-radius: var(--radius-md);
+}
+
+@keyframes shimmer {
+    0% {
+        background-position: -200% 0;
+    }
+    100% {
+        background-position: 200% 0;
+    }
+}
+
+/* ============================================
+   Focus States for Accessibility
+   Clear, visible focus indicators
+   ============================================ */
+.option-card:focus-visible {
+    outline: none;
+    box-shadow: 
+        0 0 0 2px var(--bg-primary),
+        0 0 0 4px var(--primary-500);
+}
+
+.priority-item:focus-visible {
+    outline: none;
+    box-shadow: 
+        0 0 0 2px var(--bg-primary),
+        0 0 0 4px var(--primary-500);
+}
+
+.tier-btn:focus-visible {
+    outline: none;
+    box-shadow: 
+        0 0 0 2px var(--bg-primary),
+        0 0 0 4px var(--primary-500);
+}
+
+/* ============================================
+   Print Styles
+   ============================================ */
+@media print {
+    .ambient-background,
+    .nav,
+    .scroll-indicator,
+    .step-navigation,
+    .results-navigation {
+        display: none !important;
+    }
+    
+    .section {
+        position: relative !important;
+        opacity: 1 !important;
+        visibility: visible !important;
+        transform: none !important;
+        page-break-inside: avoid;
+    }
+    
+    .section:not(.section-results) {
+        display: none !important;
+    }
+}
