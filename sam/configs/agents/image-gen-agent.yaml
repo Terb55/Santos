@@ -24,11 +24,8 @@ apps:
       agent_name: "ImageGenerationAgent"
       display_name: "Visual Artist (Gemini)"
       
-      # Override the default model to use Gemini for the brain as well
-      model:
-        model: "gemini-2.5-flash-image"
-        api_base: "https://generativelanguage.googleapis.com"
-        api_key: "${GEMINI_API_KEY}"
+      # Use the default general model (Cerebras) for logic
+      model: *general_model
 
       instruction: |
         You are a Visual Artist and Image Generation Specialist.
@@ -41,7 +38,7 @@ apps:
         GUIDELINES:
         1. When a user asks for an image, first enhance their prompt to include style, lighting, and detail.
         2. Use the `generate_image` tool to create the image.
-        3. Present the generated image path to the user (file path).
+        3. Present the generated image path to the user as PLAIN TEXT or inside a Code Block. DO NOT use markdown link syntax (like `[text](url)` or `![]()`) because the UI will try to load it as a system artifact and fail. Just say: "Image saved to: <path>"
         4. If generation fails, explain why and suggest a different prompt.
 
       tools:
@@ -51,7 +48,8 @@ apps:
           component_base_path: .
           function_name: "generate_image"
           tool_config:
-            api_key: "${GEMINI_API_KEY}"
+            api_token: "${CLOUDFLARE_API_TOKEN}"
+            account_id: "${CLOUDFLARE_ACCOUNT_ID}"
 
         # Built-in artifact tools
         - tool_type: builtin-group

@@ -1,17 +1,16 @@
 """
 Image generation tools for SAM agents.
 
-Uses Google's Gemini API (Imagen) via `google-generativeai` library.
+Uses Cloudflare Workers AI API (REST) to generate images.
+Model: @cf/black-forest-labs/flux-2-klein-4b
+Input: multipart/form-data
 """
 
 import logging
 import os
+import requests
+import base64
 from typing import Any, Dict, Optional
-
-try:
-    import google.generativeai as genai
-except ImportError:
-    genai = None
 
 log = logging.getLogger(__name__)
 
@@ -21,89 +20,118 @@ async def generate_image(
     tool_config: Optional[Dict[str, Any]] = None,
 ) -> Dict[str, Any]:
     """
-    Generate an image based on a text prompt using Google's Imagen model.
+    Generate an image based on a text prompt using Cloudflare's Flux.2 Klein model.
+    Sends request as multipart/form-data as required by this specific model endpoint.
 
     Args:
         prompt: Description of the image to generate.
 
     Returns:
-        A dictionary containing the generated image URL or data.
+        A dictionary containing the generated image file path.
     """
     log_id = f"[ImageTools:generate]"
     log.info(f"{log_id} Generating image for prompt: '{prompt}'")
 
-    if genai is None:
-        return {
-            "status": "error",
-            "message": "The 'google-generativeai' library is not installed."
-        }
-        
-    api_key = None
-    if tool_config:
-        api_key = tool_config.get("api_key")
-    
-    # Fallback to env var if not in tool config
-    if not api_key:
-        api_key = os.environ.get("GEMINI_API_KEY")
+    if not tool_config:
+        tool_config = {}
 
-    if not api_key:
+    api_token = tool_config.get("api_token") or os.environ.get("CLOUDFLARE_API_TOKEN")
+    account_id = tool_config.get("account_id") or os.environ.get("CLOUDFLARE_ACCOUNT_ID")
+
+    if not api_token or not account_id:
         return {
             "status": "error",
-            "message": "Missing GEMINI_API_KEY in tool configuration or environment."
+            "message": "Missing CLOUDFLARE_API_TOKEN or CLOUDFLARE_ACCOUNT_ID."
         }
+    
+    # Clean up account ID
+    account_id = account_id.strip().rstrip('U').strip()
+
+    # Using Flux.2 Klein
+    model_id = "@cf/black-forest-labs/flux-2-klein-4b"
+    url = f"https://api.cloudflare.com/client/v4/accounts/{account_id}/ai/run/{model_id}"
+    
+    # Authorization header ONLY. 
+    # Do NOT set Content-Type to json. requests will set it to multipart/form-data; boundary=...
+    headers = {
+        "Authorization": f"Bearer {api_token}"
+    }
+    
+    # Send as multipart/form-data
+    # 'prompt' as a field.
+    # Using 'files' dict with tuple (None, value) sends it as a form field, not a file upload.
+    multipart_data = {
+        'prompt': (None, prompt),
+        'guidance': (None, '7.5'), # Optional but good standard
+        # 'steps': (None, '4') # Fixed at 4 for this model usually, but harmless to omit
+    }
 
     try:
-        genai.configure(api_key=api_key)
+        log.info(f"{log_id} Sending multipart request to Cloudflare AI: {url}")
         
-        # Determine model - imagen-3 is latest, but might need specific access.
-        # 'gemini-pro-vision' is for understanding, not generation usually?
-        # Google's Python SDK for Imagen is evolving.
-        # As of recently, it might be `genai.ImageGenerationModel("imagen-3.0-generate-001")`.
-        # Let's try a standard model or handle the specific class.
+        # Note: Using 'files' parameter forces multipart/form-data
+        response = requests.post(url, headers=headers, files=multipart_data, timeout=60)
         
-        # Note: The 'google-generativeai' library version 0.3+ introduced some changes.
-        # We need to check if ImageGenerationModel exists.
-        
-        if not hasattr(genai, "ImageGenerationModel"):
+        if response.status_code != 200:
+             log.error(f"{log_id} API Error: {response.status_code} - {response.text}")
              return {
+                 "status": "error",
+                 "message": f"Cloudflare API Error ({response.status_code}): {response.text}"
+             }
+        
+        # Check Content-Type to determine response format (Binary or JSON-wrapped)
+        content_type = response.headers.get("Content-Type", "")
+        image_bytes = None
+        
+        if "image" in content_type:
+            # Direct binary response
+            image_bytes = response.content
+        elif "application/json" in content_type:
+            # JSON response containing Base64
+            try:
+                data = response.json()
+                b64_str = data.get("image") or data.get("result", {}).get("image")
+                if b64_str:
+                    image_bytes = base64.b64decode(b64_str)
+                else:
+                    return {
+                        "status": "error",
+                        "message": f"Could not find image data in JSON response: {str(data)[:200]}"
+                    }
+            except Exception as e:
+                return {
+                    "status": "error",
+                    "message": f"Failed to parse JSON response: {e}"
+                }
+        else:
+            return {
                 "status": "error",
-                "message": "Installed 'google-generativeai' version does not support ImageGenerationModel. Update library."
+                "message": f"Unexpected response format: {content_type}. Response: {response.text[:200]}"
             }
 
-        imagen_model = genai.ImageGenerationModel("imagen-3.0-generate-001")
-        
-        # Generate
-        result = imagen_model.generate_images(
-            prompt=prompt,
-            number_of_images=1,
-            aspect_ratio="1:1",
-            safety_filter_level="block_some",
-            person_generation="allow_adult" # Be careful with this, usually restricted?
-        )
-        
-        # 'result' has images. Each image has ._image_bytes or can be saved.
-        # For an agent, we usually return a path to the file.
-        # We should save it to a temporary location or the artifact directory.
-        
-        output_dir = "generated_images"
-        if not os.path.exists(output_dir):
-            os.makedirs(output_dir)
-            
-        generated_files = []
-        for i, img in enumerate(result.images):
-            # Create a filename based on prompt hash or timestamp
+        if image_bytes:
             import time
             timestamp = int(time.time())
-            filename = f"{output_dir}/img_{timestamp}_{i}.png"
             
-            img.save(filename)
-            generated_files.append(os.path.abspath(filename))
+            output_dir = "generated_images"
+            if not os.path.exists(output_dir):
+                os.makedirs(output_dir)
+                
+            filename = f"{output_dir}/img_{timestamp}.png"
             
-        return {
-            "status": "success",
-            "files": generated_files,
-            "message": f"Generated {len(generated_files)} images."
-        }
+            with open(filename, "wb") as f:
+                f.write(image_bytes)
+                
+            return {
+                "status": "success",
+                "files": [os.path.abspath(filename)],
+                "message": f"Generated image saved to {filename}"
+            }
+        else:
+             return {
+                "status": "error",
+                "message": "No image bytes could be extracted."
+            }
 
     except Exception as e:
         log.error(f"{log_id} Generation failed: {e}", exc_info=True)
