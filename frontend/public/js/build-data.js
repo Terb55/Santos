@@ -250,11 +250,67 @@ const BuildData = {
 // Build Engine - Connects UI with data
 const BuildEngine = {
     currentBuild: null,
+    currentBuildId: null,
 
-    generateBuild() {
+    async generateBuild() {
         const selections = Components.getSelections();
         this.currentBuild = BuildData.generateBuild(selections);
+        this.currentBuildId = null;
+
+        if (typeof AgentAPI !== 'undefined') {
+            const bestCpu = await this.getBestCpuFromAgent(selections);
+            if (bestCpu?.part && typeof bestCpu?.price === 'number') {
+                this.currentBuild.components.cpu = {
+                    id: 'cpu-agent',
+                    name: bestCpu.part,
+                    price: bestCpu.price,
+                    tier: 'agent',
+                    score: { gaming: 0, productivity: 0 }
+                };
+                this.currentBuild.total = Object.values(this.currentBuild.components).reduce((sum, comp) => sum + comp.price, 0);
+            }
+        }
+
+        if (typeof StorageManager !== 'undefined') {
+            StorageManager.saveSelections(selections);
+            Object.values(this.currentBuild.components).forEach(component => {
+                StorageManager.addPriceHistory(component.name, component.price, 'local');
+            });
+        }
         this.renderBuild();
+        this.updateSaveButton();
+    },
+
+    updateSaveButton() {
+        const btn = Utils.$('#btnSaveBuild');
+        if (!btn) return;
+        const label = btn.querySelector('span');
+        if (!label) return;
+        label.textContent = this.currentBuildId ? 'Unsave Build' : 'Save Build';
+    },
+
+    async getBestCpuFromAgent(selections) {
+        const budget = selections?.budget || 0;
+        const useCase = selections?.useCase || 'gaming';
+        const benchmarkType = ['creative', 'development', 'workstation'].includes(useCase) ? 'software' : 'gaming';
+        const prompt = [
+            'Find the best CPU using BalancePrice.',
+            `Budget max: ${budget}.`,
+            `Benchmark type: ${benchmarkType}.`,
+            'Use get_top_performers(limit=5) then price check and select_best_part.',
+            'Return JSON only: {"part":"name","price":number}'
+        ].join(' ');
+
+        try {
+            const text = await AgentAPI.sendMessage('BalancePrice', prompt);
+            const parsed = AgentAPI.safeParseJson(text);
+            if (parsed?.part && typeof parsed?.price === 'number') {
+                return parsed;
+            }
+        } catch (e) {
+            console.warn('BalancePrice agent error:', e);
+        }
+        return null;
     },
 
     renderBuild() {
@@ -362,3 +418,32 @@ const BuildEngine = {
 // Make available globally
 window.BuildData = BuildData;
 window.BuildEngine = BuildEngine;
+
+document.addEventListener('DOMContentLoaded', () => {
+    if (typeof StorageManager === 'undefined') return;
+    const params = new URLSearchParams(window.location.search);
+    const buildId = params.get('build');
+    const entry = buildId ? StorageManager.getBuildById(buildId) : StorageManager.getCurrentBuild();
+    if (entry?.build) {
+        BuildEngine.currentBuild = entry.build;
+        BuildEngine.currentBuildId = entry.id;
+        BuildEngine.renderBuild();
+        BuildEngine.updateSaveButton();
+    }
+
+    const saveBtn = Utils.$('#btnSaveBuild');
+    if (saveBtn) {
+        saveBtn.addEventListener('click', () => {
+            if (!BuildEngine.currentBuild) return;
+            if (BuildEngine.currentBuildId) {
+                StorageManager.removeBuild(BuildEngine.currentBuildId);
+                BuildEngine.currentBuildId = null;
+            } else {
+                const id = StorageManager.addBuild(BuildEngine.currentBuild);
+                BuildEngine.currentBuildId = id;
+                StorageManager.setCurrentBuild(id);
+            }
+            BuildEngine.updateSaveButton();
+        });
+    }
+});

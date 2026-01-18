@@ -183,7 +183,7 @@ const Navigation = {
         
         // Generate and display results
         if (typeof BuildEngine !== 'undefined') {
-            BuildEngine.generateBuild();
+            await BuildEngine.generateBuild();
         }
         
         // Navigate to results

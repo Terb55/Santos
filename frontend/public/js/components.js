@@ -28,6 +28,7 @@ const Components = {
         this.initBudgetSlider();
         this.initPriorityList();
         this.initWeightButtons();
+        this.loadSelectionsFromStorage();
     },
     
     /**
@@ -48,6 +49,9 @@ const Components = {
                 
                 // Store selection
                 this.selections.useCase = card.dataset.value;
+                if (typeof StorageManager !== 'undefined') {
+                    StorageManager.saveSelections(this.selections);
+                }
                 
                 // Enable continue button
                 if (continueBtn) {
@@ -123,6 +127,10 @@ const Components = {
                 const isClose = Math.abs(btnBudget - value) < 200;
                 btn.classList.toggle('active', isClose);
             });
+
+            if (typeof StorageManager !== 'undefined') {
+                StorageManager.saveSelections(this.selections);
+            }
         };
         
         // Slider input event
@@ -266,6 +274,10 @@ const Components = {
             const rankEl = Utils.$('.priority-rank', item);
             if (rankEl) rankEl.textContent = index + 1;
         });
+
+        if (typeof StorageManager !== 'undefined') {
+            StorageManager.saveSelections(this.selections);
+        }
     },
     
     /**
@@ -286,6 +298,10 @@ const Components = {
                     
                     // Store weight
                     this.selections.weights[priority] = btn.dataset.weight;
+
+                    if (typeof StorageManager !== 'undefined') {
+                        StorageManager.saveSelections(this.selections);
+                    }
                 });
             });
         });
@@ -327,6 +343,66 @@ const Components = {
             upgradability: 'medium',
             efficiency: 'low'
         };
+
+        if (typeof StorageManager !== 'undefined') {
+            StorageManager.saveSelections(this.selections);
+        }
+    },
+
+    /**
+     * Load persisted selections from storage and apply to UI
+     */
+    loadSelectionsFromStorage() {
+        if (typeof StorageManager === 'undefined') return;
+        const saved = StorageManager.getSelections();
+        if (!saved) return;
+
+        this.selections = {
+            ...this.selections,
+            ...saved,
+            priorities: saved.priorities || this.selections.priorities,
+            weights: saved.weights || this.selections.weights
+        };
+
+        // Apply use case
+        if (this.selections.useCase) {
+            const card = Utils.$(`#useCaseOptions .option-card[data-value="${this.selections.useCase}"]`);
+            if (card) {
+                Utils.$$('#useCaseOptions .option-card').forEach(c => c.classList.remove('selected'));
+                card.classList.add('selected');
+                const continueBtn = Utils.$('#btnToStep2');
+                if (continueBtn) continueBtn.disabled = false;
+                this.updateAmbientForUseCase(this.selections.useCase);
+            }
+        }
+
+        // Apply budget
+        const slider = Utils.$('#budgetSlider');
+        if (slider && this.selections.budget) {
+            slider.value = this.selections.budget;
+            slider.dispatchEvent(new Event('input'));
+        }
+
+        // Apply priorities ordering
+        const list = Utils.$('#priorityList');
+        if (list && Array.isArray(this.selections.priorities)) {
+            this.selections.priorities.forEach(priority => {
+                const item = Utils.$(`.priority-item[data-priority="${priority}"]`, list);
+                if (item) list.appendChild(item);
+            });
+            this.updatePriorityOrder();
+        }
+
+        // Apply weights
+        Utils.$$('.priority-item').forEach(item => {
+            const priority = item.dataset.priority;
+            const weight = this.selections.weights?.[priority];
+            if (!weight) return;
+            const buttons = Utils.$$('.weight-btn', item);
+            buttons.forEach(btn => {
+                btn.classList.toggle('active', btn.dataset.weight === weight);
+            });
+        });
     },
     
     /**
