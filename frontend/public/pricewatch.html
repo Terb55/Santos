@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Price Watch | Buildr AI</title>
-    <link rel="icon" type="image/png" href="../assets/imgs/buildrAI.png">
+    <link rel="icon" type="image/png" href="assets/imgs/buildrAI.png">
 
     
     <!-- Fonts -->
@@ -33,7 +33,7 @@
         <div class="page-header-inner">
             <a href="index.html" class="nav-brand">
                 <div class="brand-icon">
-                    <img src="../assets/imgs/buildrAI.png" alt="Buildr AI Logo">
+                    <img src="./assets/imgs/buildrAI.png" alt="Buildr AI Logo">
                 </div>
                 <span class="brand-text">Buildr AI</span>
             </a>
@@ -54,13 +54,13 @@
                     </svg>
                     <span>Builder</span>
                 </a>
-                <a href="mybuilds.html" class="nav-link">
+                <a href="builds.html" class="nav-link">
                     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                         <path d="M20 7h-9M14 17H5"/>
                         <circle cx="17" cy="17" r="3"/>
                         <circle cx="7" cy="7" r="3"/>
                     </svg>
-                    <span>My Builds</span>
+                    <span>Builds</span>
                 </a>
                 <a href="pricewatch.html" class="nav-link active">
                     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
@@ -79,7 +79,6 @@
                         <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/>
                     </svg>
                 </button>
-                <div class="user-avatar">JD</div>
             </div>
 
             <button class="mobile-nav-toggle" aria-label="Menu">
@@ -95,8 +94,8 @@
         <div class="page-content">
             <!-- Page Title -->
             <div class="page-title-section">
-                <h1 class="page-title">Price Watch</h1>
-                <p class="page-subtitle">Track component prices and get notified when they drop.</p>
+                <h1 class="page-title">Component Price Tracker</h1>
+                <p class="page-subtitle">Real-time pricing data from CPU and GPU benchmarks. Database synced automatically.</p>
             </div>
 
             <!-- Search and Filters -->
@@ -118,14 +117,35 @@
                 </div>
             </div>
 
+            <!-- Stats Row -->
+            <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: var(--space-4); margin-bottom: var(--space-6);">
+                <div style="background: var(--bg-tertiary); padding: var(--space-4); border-radius: var(--radius-lg); border: 1px solid var(--border-subtle);">
+                    <div style="font-size: var(--text-sm); color: var(--text-tertiary); margin-bottom: var(--space-2);">Total Components</div>
+                    <div style="font-size: var(--text-2xl); font-weight: var(--font-bold); color: var(--primary-500);">348</div>
+                </div>
+                <div style="background: var(--bg-tertiary); padding: var(--space-4); border-radius: var(--radius-lg); border: 1px solid var(--border-subtle);">
+                    <div style="font-size: var(--text-sm); color: var(--text-tertiary); margin-bottom: var(--space-2);">Price Drops (24h)</div>
+                    <div style="font-size: var(--text-2xl); font-weight: var(--font-bold); color: var(--accent-emerald);">23</div>
+                </div>
+                <div style="background: var(--bg-tertiary); padding: var(--space-4); border-radius: var(--radius-lg); border: 1px solid var(--border-subtle);">
+                    <div style="font-size: var(--text-sm); color: var(--text-tertiary); margin-bottom: var(--space-2);">Last Update</div>
+                    <div style="font-size: var(--text-2xl); font-weight: var(--font-bold); color: var(--text-primary);">2h ago</div>
+                </div>
+                <div style="background: var(--bg-tertiary); padding: var(--space-4); border-radius: var(--radius-lg); border: 1px solid var(--border-subtle);">
+                    <div style="font-size: var(--text-sm); color: var(--text-tertiary); margin-bottom: var(--space-2);">Avg. Price Change</div>
+                    <div style="font-size: var(--text-2xl); font-weight: var(--font-bold); color: var(--accent-emerald);">↓ 2.3%</div>
+                </div>
+            </div>
+
             <!-- Price Table -->
             <div class="price-table">
                 <div class="table-header">
                     <span>Component</span>
                     <span>Current Price</span>
-                    <span>30d Change</span>
-                    <span>Lowest</span>
-                    <span>Alert</span>
+                    <span>24h Change</span>
+                    <span>7d Change</span>
+                    <span>Historical Low</span>
+                    <span>Last Checked</span>
                 </div>
 
                 <!-- Row 1 -->
@@ -140,7 +160,7 @@
                         </div>
                         <div>
                             <div class="product-name">NVIDIA RTX 4070 Ti Super</div>
-                            <div style="font-size: var(--text-xs); color: var(--text-tertiary);">Graphics Card</div>
+                            <div style="font-size: var(--text-xs); color: var(--text-tertiary);">Graphics Card • Benchmark Score: 24,568</div>
                         </div>
                     </div>
                     <div class="price-cell price-current">$799</div>
@@ -148,10 +168,13 @@
                         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                             <path d="M12 19V5M5 12l7-7 7 7"/>
                         </svg>
-                        <span>-$50</span>
+                        <span>-$50 (5.9%)</span>
+                    </div>
+                    <div class="price-change down">
+                        <span>-$70 (8.1%)</span>
                     </div>
                     <div style="color: var(--text-secondary);">$749</div>
-                    <button class="alert-btn active">Watching</button>
+                    <div style="color: var(--text-tertiary); font-size: var(--text-sm);">1h ago</div>
                 </div>
 
                 <!-- Row 2 -->
@@ -165,7 +188,7 @@
                         </div>
                         <div>
                             <div class="product-name">AMD Ryzen 7 7800X3D</div>
-                            <div style="font-size: var(--text-xs); color: var(--text-tertiary);">Processor</div>
+                            <div style="font-size: var(--text-xs); color: var(--text-tertiary);">Processor • Benchmark Score: 31,245</div>
                         </div>
                     </div>
                     <div class="price-cell price-current">$449</div>
@@ -173,10 +196,13 @@
                         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                             <path d="M12 19V5M5 12l7-7 7 7"/>
                         </svg>
-                        <span>-$30</span>
+                        <span>-$30 (6.3%)</span>
+                    </div>
+                    <div class="price-change down">
+                        <span>-$50 (10%)</span>
                     </div>
                     <div style="color: var(--text-secondary);">$399</div>
-                    <button class="alert-btn active">Watching</button>
+                    <div style="color: var(--text-tertiary); font-size: var(--text-sm);">1h ago</div>
                 </div>
 
                 <!-- Row 3 -->
@@ -190,7 +216,7 @@
                         </div>
                         <div>
                             <div class="product-name">Samsung 990 Pro 2TB</div>
-                            <div style="font-size: var(--text-xs); color: var(--text-tertiary);">Storage</div>
+                            <div style="font-size: var(--text-xs); color: var(--text-tertiary);">NVMe SSD • Read: 7450 MB/s</div>
                         </div>
                     </div>
                     <div class="price-cell price-current">$169</div>
@@ -198,10 +224,13 @@
                         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                             <path d="M12 19V5M5 12l7-7 7 7"/>
                         </svg>
-                        <span>-$20</span>
+                        <span>-$20 (10.6%)</span>
+                    </div>
+                    <div class="price-change down">
+                        <span>-$30 (15.1%)</span>
                     </div>
                     <div style="color: var(--text-secondary);">$149</div>
-                    <button class="alert-btn">Set Alert</button>
+                    <div style="color: var(--text-tertiary); font-size: var(--text-sm);">2h ago</div>
                 </div>
 
                 <!-- Row 4 -->
@@ -215,7 +244,7 @@
                         </div>
                         <div>
                             <div class="product-name">G.Skill Trident Z5 32GB DDR5-6000</div>
-                            <div style="font-size: var(--text-xs); color: var(--text-tertiary);">Memory</div>
+                            <div style="font-size: var(--text-xs); color: var(--text-tertiary);">Memory • CL30-40-40-96</div>
                         </div>
                     </div>
                     <div class="price-cell price-current">$119</div>
@@ -223,10 +252,13 @@
                         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="transform: rotate(180deg);">
                             <path d="M12 19V5M5 12l7-7 7 7"/>
                         </svg>
-                        <span>+$10</span>
+                        <span>+$10 (9.2%)</span>
+                    </div>
+                    <div class="price-change down">
+                        <span>-$5 (4.0%)</span>
                     </div>
                     <div style="color: var(--text-secondary);">$99</div>
-                    <button class="alert-btn active">Watching</button>
+                    <div style="color: var(--text-tertiary); font-size: var(--text-sm);">1h ago</div>
                 </div>
 
                 <!-- Row 5 -->
@@ -241,7 +273,7 @@
                         </div>
                         <div>
                             <div class="product-name">NVIDIA RTX 4070</div>
-                            <div style="font-size: var(--text-xs); color: var(--text-tertiary);">Graphics Card</div>
+                            <div style="font-size: var(--text-xs); color: var(--text-tertiary);">Graphics Card • Benchmark Score: 22,104</div>
                         </div>
                     </div>
                     <div class="price-cell price-current">$549</div>
@@ -249,10 +281,13 @@
                         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                             <path d="M12 19V5M5 12l7-7 7 7"/>
                         </svg>
-                        <span>-$30</span>
+                        <span>-$30 (5.2%)</span>
+                    </div>
+                    <div class="price-change down">
+                        <span>-$50 (8.3%)</span>
                     </div>
                     <div style="color: var(--text-secondary);">$499</div>
-                    <button class="alert-btn">Set Alert</button>
+                    <div style="color: var(--text-tertiary); font-size: var(--text-sm);">1h ago</div>
                 </div>
 
                 <!-- Row 6 -->
@@ -266,15 +301,18 @@
                         </div>
                         <div>
                             <div class="product-name">Intel Core i5-14600K</div>
-                            <div style="font-size: var(--text-xs); color: var(--text-tertiary);">Processor</div>
+                            <div style="font-size: var(--text-xs); color: var(--text-tertiary);">Processor • Benchmark Score: 28,540</div>
                         </div>
                     </div>
                     <div class="price-cell price-current">$319</div>
                     <div class="price-change" style="color: var(--text-tertiary);">
                         <span>No change</span>
                     </div>
+                    <div class="price-change down">
+                        <span>-$10 (3.0%)</span>
+                    </div>
                     <div style="color: var(--text-secondary);">$289</div>
-                    <button class="alert-btn active">Watching</button>
+                    <div style="color: var(--text-tertiary); font-size: var(--text-sm);">2h ago</div>
                 </div>
 
                 <!-- Row 7 -->
@@ -289,7 +327,7 @@
                         </div>
                         <div>
                             <div class="product-name">ASUS ROG Strix X670E-E</div>
-                            <div style="font-size: var(--text-xs); color: var(--text-tertiary);">Motherboard</div>
+                            <div style="font-size: var(--text-xs); color: var(--text-tertiary);">Motherboard • AM5 Socket</div>
                         </div>
                     </div>
                     <div class="price-cell price-current">$449</div>
@@ -297,10 +335,41 @@
                         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                             <path d="M12 19V5M5 12l7-7 7 7"/>
                         </svg>
-                        <span>-$50</span>
+                        <span>-$50 (10.0%)</span>
+                    </div>
+                    <div class="price-change down">
+                        <span>-$70 (13.5%)</span>
                     </div>
                     <div style="color: var(--text-secondary);">$399</div>
-                    <button class="alert-btn">Set Alert</button>
+                    <div style="color: var(--text-tertiary); font-size: var(--text-sm);">1h ago</div>
+                </div>
+
+                <!-- Row 8 -->
+                <div class="table-row">
+                    <div class="product-cell">
+                        <div class="product-image">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <rect x="4" y="4" width="16" height="16" rx="2"/>
+                                <rect x="9" y="9" width="6" height="6"/>
+                            </svg>
+                        </div>
+                        <div>
+                            <div class="product-name">AMD Ryzen 5 7600X</div>
+                            <div style="font-size: var(--text-xs); color: var(--text-tertiary);">Processor • Benchmark Score: 24,890</div>
+                        </div>
+                    </div>
+                    <div class="price-cell price-current">$229</div>
+                    <div class="price-change down">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M12 19V5M5 12l7-7 7 7"/>
+                        </svg>
+                        <span>-$15 (6.1%)</span>
+                    </div>
+                    <div class="price-change down">
+                        <span>-$30 (11.6%)</span>
+                    </div>
+                    <div style="color: var(--text-secondary);">$199</div>
+                    <div style="color: var(--text-tertiary); font-size: var(--text-sm);">2h ago</div>
                 </div>
             </div>
 
@@ -314,28 +383,53 @@
     </div>
 
     <!-- Scripts -->
+    <script src="js/chat-client.js"></script>
+    <script src="js/utils.js"></script>
+    <script src="js/theme.js"></script>
+    <script src="js/animations.js"></script>
+
+    <!-- Chat Widget -->
+    <div id="chat-widget" class="chat-widget" style="display: none;">
+        <div class="chat-header">
+            <div class="chat-title">
+                <div class="chat-avatar">AI</div>
+                <span>Buildr Assistant</span>
+                <span id="chat-status" style="font-size: 10px; margin-left: 8px; color: var(--text-secondary);">Offline</span>
+            </div>
+            <button class="chat-close" id="chat-close-btn">&times;</button>
+        </div>
+        <div class="chat-messages" id="chat-messages">
+            <div class="message message-system">Hello! I'm your AI PC building assistant. How can I help you today?</div>
+        </div>
+        <div class="chat-input-area">
+            <input type="text" id="chat-input-field" placeholder="Type a message..." autocomplete="off">
+            <button id="chat-send-btn">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <path d="M22 2L11 13M22 2l-7 20-4-9-9-4 20-7z" />
+                </svg>
+            </button>
+        </div>
+    </div>
+
+    <button id="chat-toggle-btn" class="chat-fab" aria-label="Open Chat">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z" />
+        </svg>
+    </button>
+
+    <!-- Scripts -->
+    <script src="js/chat-client.js"></script>
     <script src="js/utils.js"></script>
     <script src="js/theme.js"></script>
     <script src="js/animations.js"></script>
     <script>
-        // Filter chips toggle
-        document.querySelectorAll('.filter-chip').forEach(chip => {
-            chip.addEventListener('click', () => {
-                document.querySelectorAll('.filter-chip').forEach(c => c.classList.remove('active'));
-                chip.classList.add('active');
-            });
-        });
-
-        // Alert button toggle
-        document.querySelectorAll('.alert-btn').forEach(btn => {
-            btn.addEventListener('click', () => {
-                if (btn.classList.contains('active')) {
-                    btn.classList.remove('active');
-                    btn.textContent = 'Set Alert';
-                } else {
-                    btn.classList.add('active');
-                    btn.textContent = 'Watching';
-                }
+        // Page-specific filter initialization
+        document.addEventListener('DOMContentLoaded', () => {
+            document.querySelectorAll('.filter-chip').forEach(chip => {
+                chip.addEventListener('click', () => {
+                    document.querySelectorAll('.filter-chip').forEach(c => c.classList.remove('active'));
+                    chip.classList.add('active');
+                });
             });
         });
     </script>

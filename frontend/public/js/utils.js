@@ -42,41 +42,6 @@ const Utils = {
     },
 
     /**
-     * Debounce function execution
-     * @param {Function} func - Function to debounce
-     * @param {number} wait - Wait time in ms
-     * @returns {Function}
-     */
-    debounce(func, wait = 100) {
-        let timeout;
-        return function executedFunction(...args) {
-            const later = () => {
-                clearTimeout(timeout);
-                func(...args);
-            };
-            clearTimeout(timeout);
-            timeout = setTimeout(later, wait);
-        };
-    },
-
-    /**
-     * Throttle function execution
-     * @param {Function} func - Function to throttle
-     * @param {number} limit - Time limit in ms
-     * @returns {Function}
-     */
-    throttle(func, limit = 100) {
-        let inThrottle;
-        return function(...args) {
-            if (!inThrottle) {
-                func.apply(this, args);
-                inThrottle = true;
-                setTimeout(() => inThrottle = false, limit);
-            }
-        };
-    },
-
-    /**
      * Wait for specified duration
      * @param {number} ms - Duration in milliseconds
      * @returns {Promise}
@@ -86,89 +51,11 @@ const Utils = {
     },
 
     /**
-     * Animate value from start to end
-     * @param {number} start - Start value
-     * @param {number} end - End value
-     * @param {number} duration - Animation duration in ms
-     * @param {Function} callback - Callback with current value
-     * @param {string} easing - Easing function name
-     */
-    animateValue(start, end, duration, callback, easing = 'easeOut') {
-        const startTime = performance.now();
-        const easingFns = {
-            linear: t => t,
-            easeOut: t => 1 - Math.pow(1 - t, 3),
-            easeIn: t => Math.pow(t, 3),
-            easeInOut: t => t < 0.5 ? 4 * t * t * t : 1 - Math.pow(-2 * t + 2, 3) / 2
-        };
-        
-        const easeFn = easingFns[easing] || easingFns.easeOut;
-        
-        function update(currentTime) {
-            const elapsed = currentTime - startTime;
-            const progress = Math.min(elapsed / duration, 1);
-            const easedProgress = easeFn(progress);
-            const currentValue = start + (end - start) * easedProgress;
-            
-            callback(currentValue);
-            
-            if (progress < 1) {
-                requestAnimationFrame(update);
-            }
-        }
-        
-        requestAnimationFrame(update);
-    },
-
-    /**
-     * Add class after a delay
-     * @param {Element} element - Target element
-     * @param {string} className - Class to add
-     * @param {number} delay - Delay in ms
-     */
-    addClassDelayed(element, className, delay) {
-        setTimeout(() => {
-            element.classList.add(className);
-        }, delay);
-    },
-
-    /**
-     * Remove class after a delay
-     * @param {Element} element - Target element
-     * @param {string} className - Class to remove
-     * @param {number} delay - Delay in ms
-     */
-    removeClassDelayed(element, className, delay) {
-        setTimeout(() => {
-            element.classList.remove(className);
-        }, delay);
-    },
-
-    /**
      * Check if user prefers reduced motion
      * @returns {boolean}
      */
     prefersReducedMotion() {
         return window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-    },
-
-    /**
-     * Generate unique ID
-     * @returns {string}
-     */
-    generateId() {
-        return `id_${Math.random().toString(36).substr(2, 9)}`;
-    },
-
-    /**
-     * Clamp value between min and max
-     * @param {number} value - Value to clamp
-     * @param {number} min - Minimum value
-     * @param {number} max - Maximum value
-     * @returns {number}
-     */
-    clamp(value, min, max) {
-        return Math.min(Math.max(value, min), max);
     },
 
     /**
@@ -185,46 +72,40 @@ const Utils = {
     },
 
     /**
+     * Throttle function calls
+     * @param {Function} fn - Function to throttle
+     * @param {number} delay - Delay in milliseconds
+     * @returns {Function}
+     */
+    throttle(fn, delay = 100) {
+        let lastCall = 0;
+        return function(...args) {
+            const now = Date.now();
+            if (now - lastCall >= delay) {
+                lastCall = now;
+                return fn.apply(this, args);
+            }
+        };
+    },
+
+    /**
      * Create element with attributes
-     * @param {string} tag - HTML tag
-     * @param {Object} attrs - Attributes object
-     * @param {string|Element|Array} children - Child content
+     * @param {string} tag - Element tag name
+     * @param {Object} attrs - Attributes to set
      * @returns {Element}
      */
-    createElement(tag, attrs = {}, children = null) {
-        const element = document.createElement(tag);
-        
+    createElement(tag, attrs = {}) {
+        const el = document.createElement(tag);
         Object.entries(attrs).forEach(([key, value]) => {
             if (key === 'class') {
-                element.className = value;
-            } else if (key === 'data') {
-                Object.entries(value).forEach(([dataKey, dataValue]) => {
-                    element.dataset[dataKey] = dataValue;
-                });
-            } else if (key.startsWith('on')) {
-                element.addEventListener(key.slice(2).toLowerCase(), value);
+                el.className = value;
+            } else if (key === 'style') {
+                el.style.cssText = value;
             } else {
-                element.setAttribute(key, value);
+                el.setAttribute(key, value);
             }
         });
-        
-        if (children) {
-            if (Array.isArray(children)) {
-                children.forEach(child => {
-                    if (typeof child === 'string') {
-                        element.appendChild(document.createTextNode(child));
-                    } else {
-                        element.appendChild(child);
-                    }
-                });
-            } else if (typeof children === 'string') {
-                element.textContent = children;
-            } else {
-                element.appendChild(children);
-            }
-        }
-        
-        return element;
+        return el;
     }
 };
 
