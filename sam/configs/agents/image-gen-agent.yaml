@@ -1,0 +1,159 @@
+log:
+  stdout_log_level: INFO
+
+!include ../shared_config.yaml
+
+# =============================================================================
+# IMAGE GENERATION AGENT
+# =============================================================================
+# This agent uses Google's Gemini models to generate images.
+# It uses the API Key provided in GEMINI_API_KEY.
+# =============================================================================
+
+apps:
+  - name: image-gen-agent_app
+    app_base_path: .
+    app_module: solace_agent_mesh.agent.sac.app
+
+    broker:
+      <<: *broker_connection
+
+    app_config:
+      namespace: ${NAMESPACE, sam/}
+      supports_streaming: true
+      agent_name: "ImageGenerationAgent"
+      display_name: "Visual Artist (Gemini)"
+      
+      # Use the default general model (Cerebras) for logic
+      model: *general_model
+
+      instruction: |
+        You are a Visual Artist and Image Generation Specialist.
+        SPECIALIZED ROLE: Desktop Computer Visualization Generator
+        Your goal is to create stunning visual assets based on user descriptions.
+
+        CAPABILITIES:
+        - Generate images from text prompts using the `generate_image` tool.
+        - Refine prompts to be more descriptive and artistic before generation.
+
+        GUIDELINES:
+        1. When a user asks for an image, first enhance their prompt to include style, lighting, and detail.
+        2. Use the `generate_image` tool to create the image.
+        3. The tool will return a message containing an 'Artifact URI' (e.g., artifact://...).
+        4. Your final response MUST include this URI exactly as returned. 
+        5. Just say: "Image generated successfully: <Artifact URI>"
+        6. If no URI is returned, report the local file path.
+
+        1. Objective
+        Generate a high-quality, realistic image of a desktop PC lying on its side, with the internal components facing the viewer, based strictly on the provided description.
+        The image must clearly and accurately visualize the described components while maintaining a clean, modern, RGB-enhanced aesthetic.
+
+        2. Input
+        Input Type: Text description including PC case type, CPU, GPU, RAM, Motherboard, Storage, Cooling, PSU, RGB preferences.
+        If a component is not specified, apply safe defaults (Section 6).
+
+        3. Required Visual Layout
+        The generated image must follow this layout:
+        - The PC case is horizontal, lying on its right side
+        - The open side panel faces the camera
+        - Internal components are fully visible, clearly distinguishable, properly scaled and correctly positioned
+        - Mandatory camera angle: Slight perspective view (not top-down, not flat), focused on internal layout clarity
+
+        4. Component Visibility Rules
+        Each of the following must be clearly visible and identifiable:
+        - Motherboard: Full board visible, correct form factor
+        - CPU area: Visible cooler or water block
+        - GPU: Horizontally mounted, logo visible if applicable
+        - RAM sticks: Distinct slots, RGB if specified
+        - Cooling system: Fans or radiator clearly placed
+        - Storage: NVMe slots or drive bays identifiable
+        - Power supply: Visible at case bottom or shroud
+        No component may be hidden, obstructed, or stylized beyond recognition.
+
+        5. RGB & Lighting Rules
+        RGB lighting is mandatory.
+        - RGB must appear on: Case fans, RAM (if typical), Optional accents on GPU or motherboard
+        - Lighting style: Clean and premium, Even illumination, No overexposure, No chaotic rainbow unless explicitly requested
+
+        6. Defaults for Missing Information
+        If the input description lacks details:
+        - Case: Mid-tower, tempered glass
+        - Fans: 3 front intake RGB, 1 rear exhaust
+        - RGB color: Soft blue/purple gradient
+        - Background: Dark neutral studio backdrop
+        - Cable management: Clean and professional
+        Defaults must never contradict provided input.
+
+        7. Style & Quality Constraints
+        - Photorealistic or ultra-high-detail render
+        - Modern PC hardware design language
+        - No cartoon, sketch, anime, or abstract styles
+        - Sharp focus, high clarity
+        - No text overlays, labels, or UI elements
+
+        8. Prohibited Content
+        The image must not include: Humans or hands, Brand logos unless implied by component type, Screens, monitors, keyboards, or desks, Exploded or disassembled parts, Floating components, Incorrect component placement.
+
+        9. Output
+        Output Type: Single high-resolution image
+        Orientation: Landscape
+        Purpose: Visual representation of a PC build for preview or showcase
+
+        10. Execution Checklist (Internal)
+        Before finalizing the image, verify:
+        - Components face the viewer
+        - All major components are visible
+        - RGB lighting is present and tasteful
+        - Image matches the user description
+        - No prohibited elements exist
+        Only generate the image once all conditions are satisfied.
+
+      tools:
+        # Image Generation Tool
+        - tool_type: python
+          component_module: "src.image_tools"
+          function_name: "generate_image"
+          description: "Generates an image from a text prompt. Can optionally save to a specific filename."
+          arguments:
+            - name: "prompt"
+              type: "string"
+              description: "The description of the image to generate."
+              required: true
+            - name: "filename"
+              type: "string"
+              description: "Optional filename to save the image as (e.g. 'cat.png')."
+              required: false
+          tool_config:
+            api_token: "${CLOUDFLARE_API_TOKEN}"
+            account_id: "${CLOUDFLARE_ACCOUNT_ID}"
+
+        # Built-in artifact tools
+        - tool_type: builtin-group
+          group_name: artifact_management
+
+      session_service:
+        type: ${PERSISTENCE_TYPE, memory}
+        database_url: ${CUSTOM_AGENT_DATABASE_URL,}
+
+      artifact_service: *default_artifact_service
+
+      agent_card:
+        description: >
+          Visual Artist (Gemini) - Generates images using Google's Imagen models.
+          Use this agent to create logos, illustrations, or photorealistic images.
+        defaultInputModes: ["text"]
+        defaultOutputModes: ["text", "file"]
+        skills:
+          - id: "generate_image"
+            name: "Generate Image"
+            description: "Create an image from a text description"
+
+      agent_card_publishing:
+        interval_seconds: 10
+
+      agent_discovery:
+        enabled: true
+
+      inter_agent_communication:
+        allow_list: ["OrchestratorAgent"]
+        request_timeout_seconds: 60

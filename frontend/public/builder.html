@@ -1,0 +1,664 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PC Builder | Buildr AI</title>
+    <link rel="icon" type="image/png" href="assets/imgs/buildrAI.png">
+    
+    <!-- Prevent theme flash - apply theme before any styles -->
+    <script>
+        (function() {
+            const STORAGE_KEY = 'buildrAI-theme';
+            const savedTheme = localStorage.getItem(STORAGE_KEY);
+            let theme = savedTheme || (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light');
+            document.documentElement.setAttribute('data-theme', theme);
+        })();
+    </script>
+    
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Space+Grotesk:wght@500;600;700&display=swap" rel="stylesheet">
+    
+    <!-- Stylesheets -->
+    <link rel="stylesheet" href="css/defaults.css">
+    <link rel="stylesheet" href="css/layout.css">
+    <link rel="stylesheet" href="css/components.css">
+    <link rel="stylesheet" href="css/animations.css">
+    <link rel="stylesheet" href="css/sections.css">
+    <link rel="stylesheet" href="css/pages.css">
+</head>
+<body>
+    <!-- Ambient Background -->
+    <div class="ambient-background" id="ambientBg">
+        <div class="gradient-orb orb-1"></div>
+        <div class="gradient-orb orb-2"></div>
+        <div class="gradient-orb orb-3"></div>
+        <div class="grid-overlay"></div>
+    </div>
+
+    <!-- Page Header -->
+    <header class="page-header">
+        <div class="page-header-inner">
+            <a href="index.html" class="nav-brand">
+                <div class="brand-icon">
+                    <img src="./assets/imgs/buildrAI.png" alt="Buildr AI Logo">
+                </div>
+                <span class="brand-text">Buildr AI</span>
+            </a>
+
+            <nav class="main-nav">
+                <a href="dashboard.html" class="nav-link">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <rect x="3" y="3" width="7" height="7" rx="1"/>
+                        <rect x="14" y="3" width="7" height="7" rx="1"/>
+                        <rect x="3" y="14" width="7" height="7" rx="1"/>
+                        <rect x="14" y="14" width="7" height="7" rx="1"/>
+                    </svg>
+                    <span>Dashboard</span>
+                </a>
+                <a href="builder.html" class="nav-link active">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.77-3.77a6 6 0 0 1-7.94 7.94l-6.91 6.91a2.12 2.12 0 0 1-3-3l6.91-6.91a6 6 0 0 1 7.94-7.94l-3.76 3.76z"/>
+                    </svg>
+                    <span>Builder</span>
+                </a>
+                <a href="builds.html" class="nav-link">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M20 7h-9M14 17H5"/>
+                        <circle cx="17" cy="17" r="3"/>
+                        <circle cx="7" cy="7" r="3"/>
+                    </svg>
+                    <span>Builds</span>
+                </a>
+                <a href="pricewatch.html" class="nav-link">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M12 2v20M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/>
+                    </svg>
+                    <span>Price Watch</span>
+                </a>
+            </nav>
+
+            <div class="header-actions">
+                <button class="theme-toggle" id="themeToggle" aria-label="Toggle theme">
+                    <svg class="icon-sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <circle cx="12" cy="12" r="5"/><path d="M12 1v2M12 21v2M4.22 4.22l1.42 1.42M18.36 18.36l1.42 1.42M1 12h2M21 12h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42"/>
+                    </svg>
+                    <svg class="icon-moon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/>
+                    </svg>
+                </button>
+            </div>
+
+            <button class="mobile-nav-toggle" aria-label="Menu">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <path d="M3 12h18M3 6h18M3 18h18"/>
+                </svg>
+            </button>
+        </div>
+    </header>
+
+    <!-- Main Application Container -->
+    <main class="app-container" id="app">
+        
+        <!-- Step 1: Use Case Selection -->
+        <section class="section section-step active" id="sectionUseCase" data-step="1">
+            <div class="step-container">
+                <div class="step-header">
+                    <div class="step-progress">
+                        <div class="progress-bar">
+                            <div class="progress-fill" style="--progress: 33%"></div>
+                        </div>
+                        <span class="progress-text">Step 1 of 3</span>
+                    </div>
+                    <h2 class="step-title">What will you primarily use this PC for?</h2>
+                    <p class="step-description">
+                        Select your main use case. This helps us prioritize the right components for your needs.
+                    </p>
+                </div>
+
+                <div class="options-grid" id="useCaseOptions">
+                    <button class="option-card" data-value="gaming" tabindex="0">
+                        <div class="option-icon">
+                            <svg viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="2">
+                                <rect x="6" y="14" width="36" height="24" rx="4"/>
+                                <circle cx="16" cy="26" r="4"/>
+                                <circle cx="32" cy="22" r="2"/>
+                                <circle cx="36" cy="26" r="2"/>
+                                <circle cx="32" cy="30" r="2"/>
+                                <circle cx="28" cy="26" r="2"/>
+                            </svg>
+                        </div>
+                        <div class="option-content">
+                            <h3 class="option-title">Gaming</h3>
+                            <p class="option-desc">High FPS, immersive visuals, and smooth gameplay</p>
+                        </div>
+                        <div class="option-indicator"></div>
+                    </button>
+
+                    <button class="option-card" data-value="creative" tabindex="0">
+                        <div class="option-icon">
+                            <svg viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="2">
+                                <rect x="8" y="6" width="32" height="26" rx="2"/>
+                                <path d="M8 28h32"/>
+                                <rect x="14" y="32" width="20" height="10" rx="2"/>
+                                <circle cx="24" cy="18" r="6"/>
+                                <path d="M21 16l2 2 4-4"/>
+                            </svg>
+                        </div>
+                        <div class="option-content">
+                            <h3 class="option-title">Creative Work</h3>
+                            <p class="option-desc">Video editing, 3D rendering, and design workflows</p>
+                        </div>
+                        <div class="option-indicator"></div>
+                    </button>
+
+                    <button class="option-card" data-value="development" tabindex="0">
+                        <div class="option-icon">
+                            <svg viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="2">
+                                <rect x="6" y="8" width="36" height="28" rx="3"/>
+                                <path d="M14 20l4 4-4 4"/>
+                                <path d="M22 28h10"/>
+                            </svg>
+                        </div>
+                        <div class="option-content">
+                            <h3 class="option-title">Development</h3>
+                            <p class="option-desc">Coding, compiling, VMs, and containerization</p>
+                        </div>
+                        <div class="option-indicator"></div>
+                    </button>
+
+                    <button class="option-card" data-value="streaming" tabindex="0">
+                        <div class="option-icon">
+                            <svg viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="2">
+                                <circle cx="24" cy="24" r="16"/>
+                                <polygon points="20,16 32,24 20,32" fill="currentColor"/>
+                            </svg>
+                        </div>
+                        <div class="option-content">
+                            <h3 class="option-title">Streaming</h3>
+                            <p class="option-desc">Live broadcasting with encoding performance</p>
+                        </div>
+                        <div class="option-indicator"></div>
+                    </button>
+
+                    <button class="option-card" data-value="workstation" tabindex="0">
+                        <div class="option-icon">
+                            <svg viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="2">
+                                <rect x="10" y="6" width="28" height="20" rx="2"/>
+                                <path d="M18 26v8"/>
+                                <path d="M30 26v8"/>
+                                <rect x="14" y="34" width="20" height="4" rx="1"/>
+                                <path d="M16 14h16"/>
+                                <path d="M16 18h10"/>
+                            </svg>
+                        </div>
+                        <div class="option-content">
+                            <h3 class="option-title">Workstation</h3>
+                            <p class="option-desc">CAD, simulation, and professional applications</p>
+                        </div>
+                        <div class="option-indicator"></div>
+                    </button>
+
+                    <button class="option-card" data-value="general" tabindex="0">
+                        <div class="option-icon">
+                            <svg viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="2">
+                                <rect x="8" y="10" width="32" height="22" rx="2"/>
+                                <path d="M16 32v4"/>
+                                <path d="M32 32v4"/>
+                                <path d="M12 36h24"/>
+                                <path d="M18 18h12"/>
+                                <path d="M18 22h8"/>
+                            </svg>
+                        </div>
+                        <div class="option-content">
+                            <h3 class="option-title">General Use</h3>
+                            <p class="option-desc">Everyday tasks, browsing, and light productivity</p>
+                        </div>
+                        <div class="option-indicator"></div>
+                    </button>
+                </div>
+
+                <div class="step-navigation">
+                    <a href="index.html" class="btn btn-ghost" id="btnBackToLanding">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M19 12H5M12 19l-7-7 7-7"/>
+                        </svg>
+                        <span>Back</span>
+                    </a>
+                    <button class="btn btn-primary" id="btnToStep2" disabled>
+                        <span>Continue</span>
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M5 12h14M12 5l7 7-7 7"/>
+                        </svg>
+                    </button>
+                </div>
+            </div>
+        </section>
+
+        <!-- Step 2: Budget Selection -->
+        <section class="section section-step" id="sectionBudget" data-step="2">
+            <div class="step-container">
+                <div class="step-header">
+                    <div class="step-progress">
+                        <div class="progress-bar">
+                            <div class="progress-fill" style="--progress: 66%"></div>
+                        </div>
+                        <span class="progress-text">Step 2 of 3</span>
+                    </div>
+                    <h2 class="step-title">What's your budget range?</h2>
+                    <p class="step-description">
+                        We'll optimize component selection to maximize value within your budget.
+                    </p>
+                </div>
+
+                <div class="budget-selector" id="budgetSelector">
+                    <div class="budget-slider-container">
+                        <input type="range" 
+                               id="budgetSlider" 
+                               class="budget-slider" 
+                               min="500" 
+                               max="5000" 
+                               step="100" 
+                               value="1500"
+                               aria-label="Budget amount">
+                        <div class="budget-track">
+                            <div class="budget-fill" id="budgetFill"></div>
+                            <div class="budget-markers">
+                                <span data-value="500">$500</span>
+                                <span data-value="1500">$1,500</span>
+                                <span data-value="2500">$2,500</span>
+                                <span data-value="3500">$3,500</span>
+                                <span data-value="5000">$5,000+</span>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="budget-display">
+                        <div class="budget-amount" id="budgetAmount">$1,500</div>
+                        <div class="budget-tier" id="budgetTier">Performance Build</div>
+                    </div>
+
+                    <div class="budget-tiers">
+                        <button class="tier-btn" data-budget="800">
+                            <span class="tier-name">Entry</span>
+                            <span class="tier-range">~$800</span>
+                        </button>
+                        <button class="tier-btn active" data-budget="1500">
+                            <span class="tier-name">Performance</span>
+                            <span class="tier-range">~$1,500</span>
+                        </button>
+                        <button class="tier-btn" data-budget="2500">
+                            <span class="tier-name">Enthusiast</span>
+                            <span class="tier-range">~$2,500</span>
+                        </button>
+                        <button class="tier-btn" data-budget="4000">
+                            <span class="tier-name">Ultimate</span>
+                            <span class="tier-range">~$4,000</span>
+                        </button>
+                    </div>
+                </div>
+
+                <div class="step-navigation">
+                    <button class="btn btn-ghost" id="btnBackToStep1">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M19 12H5M12 19l-7-7 7-7"/>
+                        </svg>
+                        <span>Back</span>
+                    </button>
+                    <button class="btn btn-primary" id="btnToStep3">
+                        <span>Continue</span>
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M5 12h14M12 5l7 7-7 7"/>
+                        </svg>
+                    </button>
+                </div>
+            </div>
+        </section>
+
+        <!-- Step 3: Priorities -->
+        <section class="section section-step" id="sectionPriorities" data-step="3">
+            <div class="step-container">
+                <div class="step-header">
+                    <div class="step-progress">
+                        <div class="progress-bar">
+                            <div class="progress-fill" style="--progress: 100%"></div>
+                        </div>
+                        <span class="progress-text">Step 3 of 3</span>
+                    </div>
+                    <h2 class="step-title">What matters most to you?</h2>
+                    <p class="step-description">
+                        Rank your priorities. Drag to reorder, or click to toggle importance.
+                    </p>
+                </div>
+
+                <div class="priorities-container">
+                    <ul class="priority-list" id="priorityList">
+                        <li class="priority-item" data-priority="performance" draggable="true">
+                            <div class="priority-handle">
+                                <svg viewBox="0 0 24 24" fill="currentColor">
+                                    <circle cx="9" cy="6" r="1.5"/>
+                                    <circle cx="15" cy="6" r="1.5"/>
+                                    <circle cx="9" cy="12" r="1.5"/>
+                                    <circle cx="15" cy="12" r="1.5"/>
+                                    <circle cx="9" cy="18" r="1.5"/>
+                                    <circle cx="15" cy="18" r="1.5"/>
+                                </svg>
+                            </div>
+                            <div class="priority-rank">1</div>
+                            <div class="priority-content">
+                                <span class="priority-name">Raw Performance</span>
+                                <span class="priority-desc">Maximum speed and power</span>
+                            </div>
+                            <div class="priority-weight">
+                                <button class="weight-btn active" data-weight="high">High</button>
+                                <button class="weight-btn" data-weight="medium">Med</button>
+                                <button class="weight-btn" data-weight="low">Low</button>
+                            </div>
+                        </li>
+                        <li class="priority-item" data-priority="silence" draggable="true">
+                            <div class="priority-handle">
+                                <svg viewBox="0 0 24 24" fill="currentColor">
+                                    <circle cx="9" cy="6" r="1.5"/>
+                                    <circle cx="15" cy="6" r="1.5"/>
+                                    <circle cx="9" cy="12" r="1.5"/>
+                                    <circle cx="15" cy="12" r="1.5"/>
+                                    <circle cx="9" cy="18" r="1.5"/>
+                                    <circle cx="15" cy="18" r="1.5"/>
+                                </svg>
+                            </div>
+                            <div class="priority-rank">2</div>
+                            <div class="priority-content">
+                                <span class="priority-name">Low Noise</span>
+                                <span class="priority-desc">Quiet operation</span>
+                            </div>
+                            <div class="priority-weight">
+                                <button class="weight-btn" data-weight="high">High</button>
+                                <button class="weight-btn active" data-weight="medium">Med</button>
+                                <button class="weight-btn" data-weight="low">Low</button>
+                            </div>
+                        </li>
+                        <li class="priority-item" data-priority="aesthetics" draggable="true">
+                            <div class="priority-handle">
+                                <svg viewBox="0 0 24 24" fill="currentColor">
+                                    <circle cx="9" cy="6" r="1.5"/>
+                                    <circle cx="15" cy="6" r="1.5"/>
+                                    <circle cx="9" cy="12" r="1.5"/>
+                                    <circle cx="15" cy="12" r="1.5"/>
+                                    <circle cx="9" cy="18" r="1.5"/>
+                                    <circle cx="15" cy="18" r="1.5"/>
+                                </svg>
+                            </div>
+                            <div class="priority-rank">3</div>
+                            <div class="priority-content">
+                                <span class="priority-name">Aesthetics</span>
+                                <span class="priority-desc">Visual appeal and RGB</span>
+                            </div>
+                            <div class="priority-weight">
+                                <button class="weight-btn" data-weight="high">High</button>
+                                <button class="weight-btn" data-weight="medium">Med</button>
+                                <button class="weight-btn active" data-weight="low">Low</button>
+                            </div>
+                        </li>
+                        <li class="priority-item" data-priority="upgradability" draggable="true">
+                            <div class="priority-handle">
+                                <svg viewBox="0 0 24 24" fill="currentColor">
+                                    <circle cx="9" cy="6" r="1.5"/>
+                                    <circle cx="15" cy="6" r="1.5"/>
+                                    <circle cx="9" cy="12" r="1.5"/>
+                                    <circle cx="15" cy="12" r="1.5"/>
+                                    <circle cx="9" cy="18" r="1.5"/>
+                                    <circle cx="15" cy="18" r="1.5"/>
+                                </svg>
+                            </div>
+                            <div class="priority-rank">4</div>
+                            <div class="priority-content">
+                                <span class="priority-name">Upgradability</span>
+                                <span class="priority-desc">Future-proof expandability</span>
+                            </div>
+                            <div class="priority-weight">
+                                <button class="weight-btn" data-weight="high">High</button>
+                                <button class="weight-btn active" data-weight="medium">Med</button>
+                                <button class="weight-btn" data-weight="low">Low</button>
+                            </div>
+                        </li>
+                        <li class="priority-item" data-priority="efficiency" draggable="true">
+                            <div class="priority-handle">
+                                <svg viewBox="0 0 24 24" fill="currentColor">
+                                    <circle cx="9" cy="6" r="1.5"/>
+                                    <circle cx="15" cy="6" r="1.5"/>
+                                    <circle cx="9" cy="12" r="1.5"/>
+                                    <circle cx="15" cy="12" r="1.5"/>
+                                    <circle cx="9" cy="18" r="1.5"/>
+                                    <circle cx="15" cy="18" r="1.5"/>
+                                </svg>
+                            </div>
+                            <div class="priority-rank">5</div>
+                            <div class="priority-content">
+                                <span class="priority-name">Power Efficiency</span>
+                                <span class="priority-desc">Lower power consumption</span>
+                            </div>
+                            <div class="priority-weight">
+                                <button class="weight-btn" data-weight="high">High</button>
+                                <button class="weight-btn" data-weight="medium">Med</button>
+                                <button class="weight-btn active" data-weight="low">Low</button>
+                            </div>
+                        </li>
+                    </ul>
+                </div>
+
+                <div class="step-navigation">
+                    <button class="btn btn-ghost" id="btnBackToStep2">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M19 12H5M12 19l-7-7 7-7"/>
+                        </svg>
+                        <span>Back</span>
+                    </button>
+                    <button class="btn btn-primary btn-analyze" id="btnAnalyze">
+                        <span>Generate Build</span>
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M12 2v4M12 18v4M4.93 4.93l2.83 2.83M16.24 16.24l2.83 2.83M2 12h4M18 12h4M4.93 19.07l2.83-2.83M16.24 7.76l2.83-2.83"/>
+                        </svg>
+                    </button>
+                </div>
+            </div>
+        </section>
+
+        <!-- Analyzing State -->
+        <section class="section section-analyzing" id="sectionAnalyzing">
+            <div class="analyzing-container">
+                <div class="analyzing-visual">
+                    <div class="neural-network" id="neuralNetwork">
+                        <svg viewBox="0 0 400 300" class="neural-svg">
+                            <!-- Neural network nodes and connections drawn via JS -->
+                        </svg>
+                    </div>
+                    <div class="pulse-rings">
+                        <div class="pulse-ring"></div>
+                        <div class="pulse-ring"></div>
+                        <div class="pulse-ring"></div>
+                    </div>
+                </div>
+                
+                <div class="analyzing-content">
+                    <h2 class="analyzing-title">Analyzing your requirements</h2>
+                    <div class="analyzing-steps" id="analyzingSteps">
+                        <div class="analyze-step" data-step="1">
+                            <div class="step-indicator">
+                                <svg class="step-check" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3">
+                                    <path d="M20 6L9 17l-5-5"/>
+                                </svg>
+                                <div class="step-spinner"></div>
+                            </div>
+                            <span>Processing use case parameters</span>
+                        </div>
+                        <div class="analyze-step" data-step="2">
+                            <div class="step-indicator">
+                                <svg class="step-check" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3">
+                                    <path d="M20 6L9 17l-5-5"/>
+                                </svg>
+                                <div class="step-spinner"></div>
+                            </div>
+                            <span>Optimizing budget allocation</span>
+                        </div>
+                        <div class="analyze-step" data-step="3">
+                            <div class="step-indicator">
+                                <svg class="step-check" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3">
+                                    <path d="M20 6L9 17l-5-5"/>
+                                </svg>
+                                <div class="step-spinner"></div>
+                            </div>
+                            <span>Evaluating component compatibility</span>
+                        </div>
+                        <div class="analyze-step" data-step="4">
+                            <div class="step-indicator">
+                                <svg class="step-check" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3">
+                                    <path d="M20 6L9 17l-5-5"/>
+                                </svg>
+                                <div class="step-spinner"></div>
+                            </div>
+                            <span>Generating optimal configuration</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Results Section -->
+        <section class="section section-results" id="sectionResults">
+            <div class="results-container">
+                <header class="results-header">
+                    <div class="results-badge">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/>
+                        </svg>
+                        <span>AI Recommended Build</span>
+                    </div>
+                    <h2 class="results-title" id="resultsTitle">Your Gaming Powerhouse</h2>
+                    <p class="results-summary" id="resultsSummary">
+                        Optimized for high-FPS gaming at 1440p with excellent price-to-performance ratio.
+                    </p>
+                </header>
+
+                <div class="results-grid">
+                    <div class="build-card">
+                        <div class="build-visual">
+                            <div class="component-stack" id="componentStack">
+                                <!-- Animated component assembly -->
+                            </div>
+                        </div>
+                        
+                        <div class="build-specs" id="buildSpecs">
+                            <!-- Components populated via JS -->
+                        </div>
+
+                        <div class="build-footer">
+                            <div class="total-price">
+                                <span class="price-label">Estimated Total</span>
+                                <span class="price-value" id="totalPrice">$1,487</span>
+                            </div>
+                            <div class="build-actions">
+                                <button class="btn btn-ghost btn-small">
+                                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                        <path d="M4 12v8a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-8"/>
+                                        <polyline points="16,6 12,2 8,6"/>
+                                        <line x1="12" y1="2" x2="12" y2="15"/>
+                                    </svg>
+                                    <span>Share</span>
+                                </button>
+                                <button class="btn btn-primary btn-small">
+                                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                        <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/>
+                                        <polyline points="7,10 12,15 17,10"/>
+                                        <line x1="12" y1="15" x2="12" y2="3"/>
+                                    </svg>
+                                    <span>Export List</span>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <aside class="insights-panel">
+                        <h3 class="insights-title">AI Insights</h3>
+                        <div class="insights-list" id="insightsList">
+                            <!-- Insights populated via JS -->
+                        </div>
+
+                        <div class="performance-metrics">
+                            <h4>Expected Performance</h4>
+                            <div class="metric-bars" id="metricBars">
+                                <!-- Metric bars populated via JS -->
+                            </div>
+                        </div>
+                    </aside>
+                </div>
+
+                <div class="results-navigation">
+                    <button class="btn btn-ghost" id="btnStartOver">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M3 12a9 9 0 1 0 9-9 9.75 9.75 0 0 0-6.74 2.74L3 8"/>
+                            <path d="M3 3v5h5"/>
+                        </svg>
+                        <span>Start Over</span>
+                    </button>
+                    <button class="btn btn-secondary" id="btnModify">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/>
+                            <path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/>
+                        </svg>
+                        <span>Modify Build</span>
+                    </button>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- Scripts - Organized by concern -->
+    <script src="js/chat-client.js"></script>
+    <script src="js/utils.js"></script>
+    <script src="js/theme.js"></script>
+    <script src="js/animations.js"></script>
+    <script src="js/navigation.js"></script>
+    <script src="js/components.js"></script>
+    <script src="js/build-data.js"></script>
+    <script src="js/app.js"></script>
+
+    <!-- Chat Widget -->
+    <div id="chat-widget" class="chat-widget" style="display: none;">
+        <div class="chat-header">
+            <div class="chat-title">
+                <div class="chat-avatar">AI</div>
+                <span>Buildr Assistant</span>
+                <span id="chat-status" style="font-size: 10px; margin-left: 8px; color: var(--text-secondary);">Offline</span>
+            </div>
+            <button class="chat-close" id="chat-close-btn">&times;</button>
+        </div>
+        <div class="chat-messages" id="chat-messages">
+            <div class="message message-system">Hello! I'm your AI PC building assistant. How can I help you today?</div>
+        </div>
+        <div class="chat-input-area">
+            <input type="text" id="chat-input-field" placeholder="Type a message..." autocomplete="off">
+            <button id="chat-send-btn">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <path d="M22 2L11 13M22 2l-7 20-4-9-9-4 20-7z" />
+                </svg>
+            </button>
+        </div>
+    </div>
+
+    <button id="chat-toggle-btn" class="chat-fab" aria-label="Open Chat">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z" />
+        </svg>
+    </button>
+
+    <!-- Scripts -->
+    <script src="js/chat-client.js"></script>
+    <script src="js/utils.js"></script>
+    <script src="js/theme.js"></script>
+    <script src="js/animations.js"></script>
+    <script src="js/navigation.js"></script>
+    <script src="js/build-data.js"></script>
+</body>
+</html>
