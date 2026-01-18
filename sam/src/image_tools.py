@@ -92,6 +92,18 @@ async def generate_image(
         files_list.append(filepath)
         log.info(f"[ImageTools] Image saved to disk: {filepath}")
 
+        # 1b. Force save to mounted artifacts volume (if available)
+        # This ensures the user can see it in c:\Projects\Santos\sam\data\artifacts
+        mounted_dir = "/tmp/samv2"
+        if os.path.exists(mounted_dir):
+            try:
+                mounted_path = os.path.join(mounted_dir, filename)
+                with open(mounted_path, "wb") as f:
+                    f.write(image_data)
+                log.info(f"[ImageTools] Image copied to mounted volume: {mounted_path}")
+            except Exception as e:
+                log.warning(f"[ImageTools] Failed to copy to mounted volume: {e}")
+
         # 2. Register with ArtifactService (if context available)
         if tool_context and hasattr(tool_context, "services") and hasattr(tool_context.services, "artifact_service"):
             try:
