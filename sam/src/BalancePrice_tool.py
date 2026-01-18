@@ -449,8 +449,7 @@ async def get_top_performers(
 
         sorted_items = sorted(
             [(name, data) for name, data in source_data.items() if isinstance(data.get("rank"), int)],
-            key=lambda x: x[1].get("rank", -1),
-            reverse=True,
+            key=lambda x: x[1].get("rank", 10**9),
         )[:limit]
 
         for name, data in sorted_items:
@@ -466,8 +465,7 @@ async def get_top_performers(
         title = _benchmark_db.gpu_title or "GPU Benchmark Rankings"
         sorted_items = sorted(
             [(name, data) for name, data in source_data.items() if isinstance(data.get("rank"), int)],
-            key=lambda x: x[1].get("rank", -1),
-            reverse=True,
+            key=lambda x: x[1].get("rank", 10**9),
         )[:limit]
 
         for name, data in sorted_items:
@@ -548,8 +546,7 @@ async def select_best_part(
 
     ranked = sorted(
         [(name, data) for name, data in source_data.items() if isinstance(data.get("rank"), int)],
-        key=lambda x: x[1].get("rank", -1),
-        reverse=True,
+        key=lambda x: x[1].get("rank", 10**9),
     )
 
     for name, data in ranked:
