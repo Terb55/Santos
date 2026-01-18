@@ -45,8 +45,17 @@ apps:
         # Image Generation Tool
         - tool_type: python
           component_module: "src.image_tools"
-          component_base_path: .
           function_name: "generate_image"
+          description: "Generates an image from a text prompt. Can optionally save to a specific filename."
+          arguments:
+            - name: "prompt"
+              type: "string"
+              description: "The description of the image to generate."
+              required: true
+            - name: "filename"
+              type: "string"
+              description: "Optional filename to save the image as (e.g. 'cat.png')."
+              required: false
           tool_config:
             api_token: "${CLOUDFLARE_API_TOKEN}"
             account_id: "${CLOUDFLARE_ACCOUNT_ID}"
