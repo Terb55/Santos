@@ -3,8 +3,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>My Builds | Buildr AI</title>
-    <link rel="icon" type="image/png" href="../assets/imgs/buildrAI.png">
+    <title>Builds | Buildr AI</title>
+    <link rel="icon" type="image/png" href="./assets/imgs/buildrAI.png">
     
     <!-- Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -32,7 +32,7 @@
         <div class="page-header-inner">
             <a href="index.html" class="nav-brand">
                 <div class="brand-icon">
-                    <img src="../assets/imgs/buildrAI.png" alt="Buildr AI Logo">
+                    <img src="./assets/imgs/buildrAI.png" alt="Buildr AI Logo">
                 </div>
                 <span class="brand-text">Buildr AI</span>
             </a>
@@ -53,13 +53,13 @@
                     </svg>
                     <span>Builder</span>
                 </a>
-                <a href="mybuilds.html" class="nav-link active">
+                <a href="builds.html" class="nav-link active">
                     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                         <path d="M20 7h-9M14 17H5"/>
                         <circle cx="17" cy="17" r="3"/>
                         <circle cx="7" cy="7" r="3"/>
                     </svg>
-                    <span>My Builds</span>
+                    <span>Builds</span>
                 </a>
                 <a href="pricewatch.html" class="nav-link">
                     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
@@ -78,7 +78,6 @@
                         <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/>
                     </svg>
                 </button>
-                <div class="user-avatar">JD</div>
             </div>
 
             <button class="mobile-nav-toggle" aria-label="Menu">
@@ -95,10 +94,10 @@
             <!-- Page Title -->
             <div class="page-title-section" style="display: flex; justify-content: space-between; align-items: flex-start; flex-wrap: wrap; gap: var(--space-4);">
                 <div>
-                    <h1 class="page-title">My Builds</h1>
-                    <p class="page-subtitle">Manage your saved PC configurations and drafts.</p>
+                    <h1 class="page-title">Builds</h1>
+                    <p class="page-subtitle">Browse and manage saved PC configurations.</p>
                 </div>
-                <a href="index.html" class="btn btn-primary">
+                <a href="builder.html" class="btn btn-primary">
                     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                         <path d="M12 5v14M5 12h14"/>
                     </svg>
@@ -170,7 +169,7 @@
 
                 <!-- Build Card 4: Empty State Prompt -->
                 <div class="build-preview-card" style="border-style: dashed; display: flex; align-items: center; justify-content: center; min-height: 280px;">
-                    <a href="index.html" style="text-align: center; padding: var(--space-6);">
+                    <a href="builder.html" style="text-align: center; padding: var(--space-6);">
                         <div style="width: 60px; height: 60px; margin: 0 auto var(--space-4); border-radius: 50%; background: var(--bg-tertiary); display: flex; align-items: center; justify-content: center;">
                             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="width: 24px; height: 24px; color: var(--primary-500);">
                                 <path d="M12 5v14M5 12h14"/>
@@ -184,7 +183,37 @@
         </div>
     </div>
 
+    <!-- Chat Widget -->
+    <div id="chat-widget" class="chat-widget" style="display: none;">
+        <div class="chat-header">
+            <div class="chat-title">
+                <div class="chat-avatar">AI</div>
+                <span>Buildr Assistant</span>
+                <span id="chat-status" style="font-size: 10px; margin-left: 8px; color: var(--text-secondary);">Offline</span>
+            </div>
+            <button class="chat-close" id="chat-close-btn">&times;</button>
+        </div>
+        <div class="chat-messages" id="chat-messages">
+            <div class="message message-system">Hello! I'm your AI PC building assistant. How can I help you today?</div>
+        </div>
+        <div class="chat-input-area">
+            <input type="text" id="chat-input-field" placeholder="Type a message..." autocomplete="off">
+            <button id="chat-send-btn">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <path d="M22 2L11 13M22 2l-7 20-4-9-9-4 20-7z" />
+                </svg>
+            </button>
+        </div>
+    </div>
+
+    <button id="chat-toggle-btn" class="chat-fab" aria-label="Open Chat">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z" />
+        </svg>
+    </button>
+
     <!-- Scripts -->
+    <script src="js/chat-client.js"></script>
     <script src="js/utils.js"></script>
     <script src="js/theme.js"></script>
     <script src="js/animations.js"></script>
