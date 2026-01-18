@@ -36,6 +36,11 @@ const App = {
      * Initialize all modules
      */
     initModules() {
+        // Initialize storage early for other modules
+        if (typeof StorageManager !== 'undefined' && !StorageManager._initialized) {
+            StorageManager.init();
+        }
+
         // Theme must be first to prevent flash
         if (typeof ThemeManager !== 'undefined' && !ThemeManager._initialized) {
             ThemeManager._initialized = true;

@@ -106,80 +106,7 @@
             </div>
 
             <!-- Builds Grid -->
-            <div class="builds-grid">
-                <!-- Build Card 1 -->
-                <div class="build-preview-card">
-                    <div class="build-preview-image">
-                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" style="width: 64px; height: 64px; color: var(--text-tertiary);">
-                            <rect x="4" y="2" width="16" height="20" rx="2"/>
-                            <circle cx="12" cy="7" r="2"/>
-                            <path d="M8 14h8M8 17h8"/>
-                        </svg>
-                        <span class="build-status saved">Saved</span>
-                    </div>
-                    <div class="build-preview-content">
-                        <h3 class="build-preview-title">Gaming Powerhouse</h3>
-                        <p class="build-preview-specs">Ryzen 7 7800X3D • RTX 4070 Ti Super • 32GB DDR5 • 2TB NVMe</p>
-                        <div class="build-preview-footer">
-                            <span class="build-price">$2,147</span>
-                            <span class="build-date">Dec 15, 2024</span>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Build Card 2 -->
-                <div class="build-preview-card">
-                    <div class="build-preview-image">
-                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" style="width: 64px; height: 64px; color: var(--text-tertiary);">
-                            <rect x="4" y="2" width="16" height="20" rx="2"/>
-                            <circle cx="12" cy="7" r="2"/>
-                            <path d="M8 14h8M8 17h8"/>
-                        </svg>
-                        <span class="build-status saved">Saved</span>
-                    </div>
-                    <div class="build-preview-content">
-                        <h3 class="build-preview-title">Creative Workstation</h3>
-                        <p class="build-preview-specs">Intel i9-14900K • RTX 4090 • 64GB DDR5 • 4TB NVMe</p>
-                        <div class="build-preview-footer">
-                            <span class="build-price">$4,892</span>
-                            <span class="build-date">Dec 10, 2024</span>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Build Card 3 -->
-                <div class="build-preview-card">
-                    <div class="build-preview-image">
-                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" style="width: 64px; height: 64px; color: var(--text-tertiary);">
-                            <rect x="4" y="2" width="16" height="20" rx="2"/>
-                            <circle cx="12" cy="7" r="2"/>
-                            <path d="M8 14h8M8 17h8"/>
-                        </svg>
-                        <span class="build-status draft">Draft</span>
-                    </div>
-                    <div class="build-preview-content">
-                        <h3 class="build-preview-title">Budget Starter</h3>
-                        <p class="build-preview-specs">Ryzen 5 7600X • RX 7600 • 16GB DDR5 • 1TB NVMe</p>
-                        <div class="build-preview-footer">
-                            <span class="build-price">$987</span>
-                            <span class="build-date">Dec 8, 2024</span>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Build Card 4: Empty State Prompt -->
-                <div class="build-preview-card" style="border-style: dashed; display: flex; align-items: center; justify-content: center; min-height: 280px;">
-                    <a href="builder.html" style="text-align: center; padding: var(--space-6);">
-                        <div style="width: 60px; height: 60px; margin: 0 auto var(--space-4); border-radius: 50%; background: var(--bg-tertiary); display: flex; align-items: center; justify-content: center;">
-                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="width: 24px; height: 24px; color: var(--primary-500);">
-                                <path d="M12 5v14M5 12h14"/>
-                            </svg>
-                        </div>
-                        <p style="font-weight: var(--font-medium); color: var(--text-primary); margin-bottom: var(--space-1);">Create New Build</p>
-                        <p style="font-size: var(--text-sm); color: var(--text-tertiary);">Start with AI or manual builder</p>
-                    </a>
-                </div>
-            </div>
+            <div class="builds-grid"></div>
         </div>
     </div>
 
@@ -215,7 +142,9 @@
     <!-- Scripts -->
     <script src="js/chat-client.js"></script>
     <script src="js/utils.js"></script>
+    <script src="js/storage.js"></script>
     <script src="js/theme.js"></script>
     <script src="js/animations.js"></script>
+    <script src="js/builds.js"></script>
 </body>
 </html>

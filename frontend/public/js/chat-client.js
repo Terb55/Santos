@@ -27,21 +27,42 @@ class SAMChatClient {
             if (e.key === 'Enter') this.sendMessage();
         });
 
+        this.homeMode = this.isHomePage();
+        if (this.homeMode) {
+            this.openChat();
+        }
+
         this.connect();
     }
 
-    toggleChat() {
-        this.chatWidget.style.display =
-            this.chatWidget.style.display === 'none' ? 'flex' : 'none';
+    isHomePage() {
+        const path = window.location.pathname.toLowerCase();
+        return path.endsWith('/') || path.endsWith('/index.html') || path === '';
+    }
 
-        if (this.chatWidget.style.display === 'flex') {
-            this.inputField.focus();
-            this.messagesContainer.scrollTop = this.messagesContainer.scrollHeight;
+    openChat() {
+        this.chatWidget.style.display = 'flex';
+        if (this.toggleButton) {
+            this.toggleButton.style.display = 'none';
+        }
+        this.inputField.focus();
+        this.messagesContainer.scrollTop = this.messagesContainer.scrollHeight;
+    }
+
+    toggleChat() {
+        const isHidden = this.chatWidget.style.display === 'none';
+        if (isHidden) {
+            this.openChat();
+        } else {
+            this.closeChat();
         }
     }
 
     closeChat() {
         this.chatWidget.style.display = 'none';
+        if (this.toggleButton) {
+            this.toggleButton.style.display = 'flex';
+        }
     }
 
     async connect() {
