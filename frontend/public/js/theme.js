@@ -106,14 +106,6 @@ const ThemeManager = {
      */
     getTheme() {
         return this.currentTheme;
-    },
-    
-    /**
-     * Check if current theme is dark
-     * @returns {boolean}
-     */
-    isDark() {
-        return this.currentTheme === 'dark';
     }
 };
 

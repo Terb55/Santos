@@ -22,8 +22,6 @@ const App = {
      * Bootstrap all modules
      */
     bootstrap() {
-        console.log('Buildr AI initializing...');
-
         // Initialize modules in order
         this.initModules();
 
@@ -32,8 +30,6 @@ const App = {
 
         // Mark app as ready
         document.body.classList.add('app-ready');
-
-        console.log('Buildr AI ready');
     },
 
     /**
@@ -78,10 +74,16 @@ const App = {
             }
         });
 
-        // Handle resize events
-        window.addEventListener('resize', Utils.debounce(() => {
+        // Handle resize events with throttle
+        let resizeTimeout;
+        window.addEventListener('resize', () => {
+            if (resizeTimeout) return;
             window.dispatchEvent(new CustomEvent('appresize'));
-        }, 200));
+            resizeTimeout = true;
+            setTimeout(() => {
+                resizeTimeout = false;
+            }, 200);
+        });
 
         // Handle section changes
         window.addEventListener('sectionchange', (e) => {
@@ -93,7 +95,7 @@ const App = {
      * Handle section change events
      */
     onSectionChange(detail) {
-        const { section, direction } = detail;
+        const { section } = detail;
 
         // Update page title based on section
         const titles = {
@@ -106,27 +108,6 @@ const App = {
         };
 
         document.title = titles[section] || titles.sectionLanding;
-
-        // Track analytics (mock)
-        this.trackPageView(section);
-    },
-
-    /**
-     * Mock analytics tracking
-     */
-    trackPageView(section) {
-        console.log(`Page view: ${section}`);
-    },
-
-    /**
-     * Get app state
-     */
-    getState() {
-        return {
-            theme: ThemeManager?.getTheme() || 'light',
-            section: Navigation?.getCurrentSection() || 'sectionLanding',
-            selections: Components?.getSelections() || {}
-        };
     }
 };
 
