@@ -146,7 +146,14 @@ class SAMChatClient {
                         reply = "Agent processed the task but returned no history.";
                     }
                 } else if (data.result.status && data.result.status.state === 'submitted') {
-                    reply = "Task submitted (Processing asynchronously).";
+                    // Start Polling
+                    const taskId = data.result.id;
+                    if (taskId) {
+                        this.pollTask(taskId);
+                        return; // Exit, polling handles the rest
+                    } else {
+                        reply = "Task submitted but no ID returned to poll.";
+                    }
                 }
             } else if (data.response) {
                 reply = data.response;
@@ -163,11 +170,105 @@ class SAMChatClient {
             thinkingMessage.remove();
             this.addMessage('system', `Error: ${err.message}`);
         } finally {
-            this.inputField.disabled = false;
-            this.sendButton.disabled = false;
-            this.inputField.focus();
+            if (!this.isPolling) {
+                this.inputField.disabled = false;
+                this.sendButton.disabled = false;
+                this.inputField.focus();
+            }
             this.messagesContainer.scrollTop = this.messagesContainer.scrollHeight;
         }
+    }
+
+    async pollTask(taskId) {
+        this.isPolling = true;
+        let attempts = 0;
+        const maxAttempts = 30; // 60 seconds with 2s interval
+
+        this.addMessage('system', 'Agent processing task asynchronously. Polling for results...');
+
+        const pollLoop = async () => {
+            try {
+                attempts++;
+                const response = await fetch(`${this.baseUrl}/api/v1/tasks/${taskId}`, {
+                    method: 'GET',
+                    headers: {
+                        'solace-session-id': this.sessionId
+                    }
+                });
+
+                // Handle 404 (Not Found) - task might not be created/persisted yet
+                if (response.status === 404) {
+                    console.log(`Task ${taskId} not found (404), attempt ${attempts}/${maxAttempts}`);
+                    if (attempts < maxAttempts) {
+                        setTimeout(pollLoop, 2000); // Wait 2s before retry
+                        return;
+                    } else {
+                        throw new Error('Task not found after maximum attempts.');
+                    }
+                }
+
+                if (!response.ok) throw new Error(`Polling error: ${response.status}`);
+
+                const task = await response.json();
+                console.log('Poll Task Result:', task);
+
+                if (task.status && (task.status.state === 'completed' || task.status.state === 'success')) {
+                    this.isPolling = false;
+                    this.inputField.disabled = false;
+                    this.sendButton.disabled = false;
+                    this.inputField.focus();
+                    this.handleTaskResponse(task);
+                } else if (task.status && (task.status.state === 'failed' || task.status.state === 'error')) {
+                    this.isPolling = false;
+                    this.inputField.disabled = false;
+                    this.sendButton.disabled = false;
+                    this.addMessage('system', `Task failed: ${task.status.message || 'Unknown error'}`);
+                } else {
+                    // Still processing
+                    if (attempts < maxAttempts) {
+                        setTimeout(pollLoop, 2000); // Wait 2s before retry
+                    } else {
+                        this.isPolling = false;
+                        this.inputField.disabled = false;
+                        this.sendButton.disabled = false;
+                        this.addMessage('system', 'Task timed out waiting for result.');
+                    }
+                }
+            } catch (err) {
+                console.error('Polling exception:', err);
+                this.isPolling = false;
+                this.inputField.disabled = false;
+                this.sendButton.disabled = false;
+                this.addMessage('system', `Polling failed: ${err.message}`);
+            }
+        };
+
+        pollLoop();
+    }
+
+    handleTaskResponse(taskResult) {
+        let reply = "No response text found.";
+
+        if (taskResult.history && Array.isArray(taskResult.history)) {
+            const agentMsgs = taskResult.history.filter(m => m.role === 'agent' || m.role === 'assistant' || m.role === 'model');
+            if (agentMsgs.length > 0) {
+                const lastMsg = agentMsgs[agentMsgs.length - 1];
+                if (lastMsg.parts && lastMsg.parts.length > 0) {
+                    const textPart = lastMsg.parts.find(p => p.kind === 'text' || p.text);
+                    if (textPart) {
+                        reply = textPart.text;
+                    }
+                }
+            } else {
+                // If history exists but no agent message, check if there's a result in artifacts or just status
+                reply = "Task completed successfully.";
+            }
+        } else {
+            // Fallback if no history (unlikely for chat task)
+            reply = "Task completed.";
+        }
+
+        this.addMessage('agent', reply);
     }
 
     addMessage(type, text, isThinking = false) {
