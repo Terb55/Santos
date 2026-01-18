@@ -1,0 +1,959 @@
+{
+  "GPU Benchmark Rankings": [
+    {
+      "rank": 1,
+      "name": "GeForce RTX 5090 (32GB)",
+      "benchmark_score": 6840.0,
+      "relative_performance": 100.0
+    },
+    {
+      "rank": 2,
+      "name": "GeForce RTX 4090",
+      "benchmark_score": 5540.4,
+      "relative_performance": 81.0
+    },
+    {
+      "rank": 3,
+      "name": "GeForce RTX 5080 (16GB)",
+      "benchmark_score": 4709.3,
+      "relative_performance": 68.84999999999998
+    },
+    {
+      "rank": 4,
+      "name": "Radeon RX 7900 XTX",
+      "benchmark_score": 4426.8,
+      "relative_performance": 64.71899999999998
+    },
+    {
+      "rank": 5,
+      "name": "GeForce RTX 4080 Super (16GB)",
+      "benchmark_score": 4382.5,
+      "relative_performance": 64.07180999999997
+    },
+    {
+      "rank": 6,
+      "name": "GeForce RTX 4080",
+      "benchmark_score": 4338.7,
+      "relative_performance": 63.431091899999984
+    },
+    {
+      "rank": 7,
+      "name": "Radeon RX 9070 XT",
+      "benchmark_score": 4208.5,
+      "relative_performance": 61.52815914299997
+    },
+    {
+      "rank": 8,
+      "name": "GeForce RTX 5070 Ti (16GB)",
+      "benchmark_score": 4208.5,
+      "relative_performance": 61.52815914299997
+    },
+    {
+      "rank": 9,
+      "name": "Radeon RX 7900 XT",
+      "benchmark_score": 3956.0,
+      "relative_performance": 57.83646959441998
+    },
+    {
+      "rank": 10,
+      "name": "GeForce RTX 4070 Ti Super (16GB)",
+      "benchmark_score": 3956.0,
+      "relative_performance": 57.83646959441998
+    },
+    {
+      "rank": 11,
+      "name": "Radeon RX 9070",
+      "benchmark_score": 3718.7,
+      "relative_performance": 54.36628141875478
+    },
+    {
+      "rank": 12,
+      "name": "GeForce RTX 4070 Ti",
+      "benchmark_score": 3718.7,
+      "relative_performance": 54.36628141875478
+    },
+    {
+      "rank": 13,
+      "name": "GeForce RTX 5070 (12GB)",
+      "benchmark_score": 3718.6,
+      "relative_performance": 54.36481943093172
+    },
+    {
+      "rank": 14,
+      "name": "GeForce RTX 3090 Ti",
+      "benchmark_score": 3718.6,
+      "relative_performance": 54.36481943093172,
+      "status": "outdated"
+    },
+    {
+      "rank": 15,
+      "name": "GeForce RTX 3090",
+      "benchmark_score": 3718.5,
+      "relative_performance": 54.36335744310866,
+      "status": "outdated"
+    },
+    {
+      "rank": 16,
+      "name": "Radeon RX 6950 XT",
+      "benchmark_score": 3718.4,
+      "relative_performance": 54.3618954552856,
+      "status": "outdated"
+    },
+    {
+      "rank": 17,
+      "name": "GeForce RTX 4070 Super (12GB)",
+      "benchmark_score": 3569.6,
+      "relative_performance": 52.187419637074186
+    },
+    {
+      "rank": 18,
+      "name": "GeForce RTX 3080 Ti",
+      "benchmark_score": 3498.2,
+      "relative_performance": 51.14367124433271,
+      "status": "outdated"
+    },
+    {
+      "rank": 19,
+      "name": "Radeon RX 6900 XT",
+      "benchmark_score": 3498.1,
+      "relative_performance": 51.14220925650963,
+      "status": "outdated"
+    },
+    {
+      "rank": 20,
+      "name": "Radeon RX 7900 GRE",
+      "benchmark_score": 3498.0,
+      "relative_performance": 51.140747268686575
+    },
+    {
+      "rank": 21,
+      "name": "Radeon RX 7800 XT",
+      "benchmark_score": 3253.2,
+      "relative_performance": 47.56089495987851
+    },
+    {
+      "rank": 22,
+      "name": "GeForce RTX 4070",
+      "benchmark_score": 3188.1,
+      "relative_performance": 46.60967706068094
+    },
+    {
+      "rank": 23,
+      "name": "GeForce RTX 3080 (12GB)",
+      "benchmark_score": 3188.0,
+      "relative_performance": 46.60821507285789,
+      "status": "outdated"
+    },
+    {
+      "rank": 24,
+      "name": "GeForce RTX 3080",
+      "benchmark_score": 3092.4,
+      "relative_performance": 45.20996862067214,
+      "status": "outdated"
+    },
+    {
+      "rank": 25,
+      "name": "Radeon RX 6800 XT",
+      "benchmark_score": 3061.4,
+      "relative_performance": 44.757868934465435,
+      "status": "outdated"
+    },
+    {
+      "rank": 26,
+      "name": "GeForce RTX 5060 Ti (8GB)",
+      "benchmark_score": 2816.5,
+      "relative_performance": 41.177239419708194
+    },
+    {
+      "rank": 27,
+      "name": "GeForce RTX 5060 Ti (16GB)",
+      "benchmark_score": 2816.5,
+      "relative_performance": 41.177239419708194
+    },
+    {
+      "rank": 28,
+      "name": "Radeon RX 9060 XT (16GB)",
+      "benchmark_score": 2703.9,
+      "relative_performance": 39.53014984291987
+    },
+    {
+      "rank": 29,
+      "name": "Radeon RX 7700 XT",
+      "benchmark_score": 2703.8,
+      "relative_performance": 39.528687855096805
+    },
+    {
+      "rank": 30,
+      "name": "Radeon RX 6800",
+      "benchmark_score": 2541.5,
+      "relative_performance": 37.156966583791004,
+      "status": "outdated"
+    },
+    {
+      "rank": 31,
+      "name": "Radeon RX 6750 XT",
+      "benchmark_score": 2236.6,
+      "relative_performance": 32.69813059373608,
+      "status": "outdated"
+    },
+    {
+      "rank": 32,
+      "name": "GeForce RTX 3070 Ti",
+      "benchmark_score": 2236.6,
+      "relative_performance": 32.69813059373608,
+      "status": "outdated"
+    },
+    {
+      "rank": 33,
+      "name": "Radeon RX 9060 XT (8GB)",
+      "benchmark_score": 2236.5,
+      "relative_performance": 32.696668605913025
+    },
+    {
+      "rank": 34,
+      "name": "GeForce RTX 3070",
+      "benchmark_score": 2214.1,
+      "relative_performance": 32.369701919853895,
+      "status": "outdated"
+    },
+    {
+      "rank": 35,
+      "name": "GeForce RTX 2080 Ti",
+      "benchmark_score": 2214.0,
+      "relative_performance": 32.36823993203083,
+      "status": "outdated"
+    },
+    {
+      "rank": 36,
+      "name": "GeForce RTX 4060 Ti (8GB)",
+      "benchmark_score": 2213.9,
+      "relative_performance": 32.36677794420777
+    },
+    {
+      "rank": 37,
+      "name": "GeForce RTX 5060 (8GB)",
+      "benchmark_score": 2213.8,
+      "relative_performance": 32.36531595638471
+    },
+    {
+      "rank": 38,
+      "name": "GeForce RTX 4060 Ti (16GB)",
+      "benchmark_score": 2213.8,
+      "relative_performance": 32.36531595638471
+    },
+    {
+      "rank": 39,
+      "name": "Radeon RX 6700 XT",
+      "benchmark_score": 1881.7,
+      "relative_performance": 27.510518562927004,
+      "status": "outdated"
+    },
+    {
+      "rank": 40,
+      "name": "GeForce RTX 3060 Ti",
+      "benchmark_score": 1862.9,
+      "relative_performance": 27.235413377297732,
+      "status": "outdated"
+    },
+    {
+      "rank": 41,
+      "name": "GeForce RTX 2080 Super",
+      "benchmark_score": 1788.4,
+      "relative_performance": 26.14599684220582,
+      "status": "outdated"
+    },
+    {
+      "rank": 42,
+      "name": "GeForce RTX 2080",
+      "benchmark_score": 1699.0,
+      "relative_performance": 24.838697000095532,
+      "status": "outdated"
+    },
+    {
+      "rank": 43,
+      "name": "Radeon RX 7600 XT (16GB)",
+      "benchmark_score": 1648.0,
+      "relative_performance": 24.09353609009267
+    },
+    {
+      "rank": 44,
+      "name": "Intel Arc B580",
+      "benchmark_score": 1647.9,
+      "relative_performance": 24.092074102269606
+    },
+    {
+      "rank": 45,
+      "name": "Radeon RX 6700",
+      "benchmark_score": 1549.0,
+      "relative_performance": 22.64654965613343,
+      "status": "outdated"
+    },
+    {
+      "rank": 46,
+      "name": "GeForce RTX 4060 (8GB)",
+      "benchmark_score": 1518.0,
+      "relative_performance": 22.193618663010763
+    },
+    {
+      "rank": 47,
+      "name": "Radeon RX 7600",
+      "benchmark_score": 1457.3,
+      "relative_performance": 21.30587391649033
+    },
+    {
+      "rank": 48,
+      "name": "GeForce RTX 2070 Super",
+      "benchmark_score": 1413.6,
+      "relative_performance": 20.66669769899562,
+      "status": "outdated"
+    },
+    {
+      "rank": 49,
+      "name": "GeForce RTX 5050 (8GB)",
+      "benchmark_score": 1413.5,
+      "relative_performance": 20.665235711172556
+    },
+    {
+      "rank": 50,
+      "name": "Intel Arc A770",
+      "benchmark_score": 1187.3,
+      "relative_performance": 17.358797997384947,
+      "status": "outdated"
+    },
+    {
+      "rank": 51,
+      "name": "Radeon RX 6650 XT",
+      "benchmark_score": 1187.2,
+      "relative_performance": 17.357336009561884,
+      "status": "outdated"
+    },
+    {
+      "rank": 52,
+      "name": "Radeon RX 6600 XT",
+      "benchmark_score": 1139.8,
+      "relative_performance": 16.66304256917941,
+      "status": "outdated"
+    },
+    {
+      "rank": 53,
+      "name": "GeForce GTX 1080 Ti",
+      "benchmark_score": 1128.4,
+      "relative_performance": 16.496412143487614,
+      "status": "outdated"
+    },
+    {
+      "rank": 54,
+      "name": "Radeon VII",
+      "benchmark_score": 1094.5,
+      "relative_performance": 16.001519779182985,
+      "status": "outdated"
+    },
+    {
+      "rank": 55,
+      "name": "Intel Arc A750",
+      "benchmark_score": 1094.4,
+      "relative_performance": 16.000057791359925,
+      "status": "outdated"
+    },
+    {
+      "rank": 56,
+      "name": "Radeon RX 5700 XT",
+      "benchmark_score": 1094.3,
+      "relative_performance": 15.998595803536865,
+      "status": "outdated"
+    },
+    {
+      "rank": 57,
+      "name": "GeForce RTX 3060",
+      "benchmark_score": 1094.2,
+      "relative_performance": 15.997133815713804,
+      "status": "outdated"
+    },
+    {
+      "rank": 58,
+      "name": "GeForce RTX 2070",
+      "benchmark_score": 1072.3,
+      "relative_performance": 15.677191139399529,
+      "status": "outdated"
+    },
+    {
+      "rank": 59,
+      "name": "GeForce RTX 2060 Super",
+      "benchmark_score": 1050.9,
+      "relative_performance": 15.363647316611539,
+      "status": "outdated"
+    },
+    {
+      "rank": 60,
+      "name": "Radeon RX 5700",
+      "benchmark_score": 1040.4,
+      "relative_performance": 15.210010843445422,
+      "status": "outdated"
+    },
+    {
+      "rank": 61,
+      "name": "Radeon RX 6600",
+      "benchmark_score": 1030.0,
+      "relative_performance": 15.05791073501097,
+      "status": "outdated"
+    },
+    {
+      "rank": 62,
+      "name": "Radeon RX 5600 XT (6GB)",
+      "benchmark_score": 947.6,
+      "relative_performance": 13.853277876210093,
+      "status": "outdated"
+    },
+    {
+      "rank": 63,
+      "name": "GeForce GTX 1080",
+      "benchmark_score": 947.5,
+      "relative_performance": 13.851815888387032,
+      "status": "outdated"
+    },
+    {
+      "rank": 64,
+      "name": "GeForce RTX 2060 (6GB)",
+      "benchmark_score": 928.5,
+      "relative_performance": 13.574779570619288,
+      "status": "outdated"
+    },
+    {
+      "rank": 65,
+      "name": "Radeon RX Vega 64",
+      "benchmark_score": 928.4,
+      "relative_performance": 13.573317582796227,
+      "status": "outdated"
+    },
+    {
+      "rank": 66,
+      "name": "GeForce GTX 1070 Ti",
+      "benchmark_score": 891.3,
+      "relative_performance": 13.03038487948438,
+      "status": "outdated"
+    },
+    {
+      "rank": 67,
+      "name": "Radeon RX Vega 56",
+      "benchmark_score": 873.5,
+      "relative_performance": 12.76977718189469,
+      "status": "outdated"
+    },
+    {
+      "rank": 68,
+      "name": "GeForce RTX 3050 (8GB)",
+      "benchmark_score": 873.4,
+      "relative_performance": 12.768315194071626,
+      "status": "outdated"
+    },
+    {
+      "rank": 69,
+      "name": "GeForce GTX 1070",
+      "benchmark_score": 838.4,
+      "relative_performance": 12.25758258630876,
+      "status": "outdated"
+    },
+    {
+      "rank": 70,
+      "name": "GeForce GTX 1660 Ti (6GB)",
+      "benchmark_score": 838.3,
+      "relative_performance": 12.256120598485701,
+      "status": "outdated"
+    },
+    {
+      "rank": 71,
+      "name": "GeForce GTX 1660 Super",
+      "benchmark_score": 813.2,
+      "relative_performance": 11.888436980531129,
+      "status": "outdated"
+    },
+    {
+      "rank": 72,
+      "name": "GeForce GTX 980 Ti",
+      "benchmark_score": 772.5,
+      "relative_performance": 11.294015131504569,
+      "status": "outdated"
+    },
+    {
+      "rank": 73,
+      "name": "GeForce GTX 1660 (6GB)",
+      "benchmark_score": 757.1,
+      "relative_performance": 11.06813482887448,
+      "status": "outdated"
+    },
+    {
+      "rank": 74,
+      "name": "Radeon RX 590",
+      "benchmark_score": 719.2,
+      "relative_performance": 10.514728087430756,
+      "status": "outdated"
+    },
+    {
+      "rank": 75,
+      "name": "Radeon RX 5500 XT (8GB)",
+      "benchmark_score": 719.2,
+      "relative_performance": 10.514728087430756,
+      "status": "outdated"
+    },
+    {
+      "rank": 76,
+      "name": "Radeon RX 5500 XT (4GB)",
+      "benchmark_score": 661.7,
+      "relative_performance": 9.673549840436296,
+      "status": "outdated"
+    },
+    {
+      "rank": 77,
+      "name": "GeForce GTX 1650 Super",
+      "benchmark_score": 661.6,
+      "relative_performance": 9.672087852613233,
+      "status": "outdated"
+    },
+    {
+      "rank": 78,
+      "name": "Radeon R9 Fury X",
+      "benchmark_score": 516.0,
+      "relative_performance": 7.5442285250383225,
+      "status": "outdated"
+    },
+    {
+      "rank": 79,
+      "name": "Radeon R9 Fury",
+      "benchmark_score": 485.1,
+      "relative_performance": 7.091574813536022,
+      "status": "outdated"
+    },
+    {
+      "rank": 80,
+      "name": "Radeon HD 7990",
+      "benchmark_score": 485.1,
+      "relative_performance": 7.091574813536022,
+      "status": "outdated"
+    },
+    {
+      "rank": 81,
+      "name": "Radeon RX 6500 XT (4GB)",
+      "benchmark_score": 485.0,
+      "relative_performance": 7.090112825712959,
+      "status": "outdated"
+    },
+    {
+      "rank": 82,
+      "name": "Radeon R9 Nano",
+      "benchmark_score": 484.9,
+      "relative_performance": 7.088650837889896,
+      "status": "outdated"
+    },
+    {
+      "rank": 83,
+      "name": "GeForce GTX 980",
+      "benchmark_score": 460.6,
+      "relative_performance": 6.7342182959954,
+      "status": "outdated"
+    },
+    {
+      "rank": 84,
+      "name": "Radeon RX 580 (8GB)",
+      "benchmark_score": 460.5,
+      "relative_performance": 6.7327563081723385,
+      "status": "outdated"
+    },
+    {
+      "rank": 85,
+      "name": "GeForce GTX 1060 (6GB)",
+      "benchmark_score": 451.3,
+      "relative_performance": 6.598101182008891,
+      "status": "outdated"
+    },
+    {
+      "rank": 86,
+      "name": "Radeon RX 580 (4GB)",
+      "benchmark_score": 437.8,
+      "relative_performance": 6.400158146548625,
+      "status": "outdated"
+    },
+    {
+      "rank": 87,
+      "name": "GeForce GTX 1060 (3GB)",
+      "benchmark_score": 420.3,
+      "relative_performance": 6.144151820686679,
+      "status": "outdated"
+    },
+    {
+      "rank": 88,
+      "name": "Radeon R9 390X",
+      "benchmark_score": 420.2,
+      "relative_performance": 6.142689832863617,
+      "status": "outdated"
+    },
+    {
+      "rank": 89,
+      "name": "Radeon RX 480",
+      "benchmark_score": 407.6,
+      "relative_performance": 5.958409137877708,
+      "status": "outdated"
+    },
+    {
+      "rank": 90,
+      "name": "Radeon RX 570 (8GB)",
+      "benchmark_score": 399.4,
+      "relative_performance": 5.839240955120153,
+      "status": "outdated"
+    },
+    {
+      "rank": 91,
+      "name": "GeForce GTX 690",
+      "benchmark_score": 399.3,
+      "relative_performance": 5.837778967297091,
+      "status": "outdated"
+    },
+    {
+      "rank": 92,
+      "name": "Radeon RX 570 (4GB)",
+      "benchmark_score": 399.2,
+      "relative_performance": 5.836316979474027,
+      "status": "outdated"
+    },
+    {
+      "rank": 93,
+      "name": "Radeon R9 390",
+      "benchmark_score": 399.2,
+      "relative_performance": 5.836316979474027,
+      "status": "outdated"
+    },
+    {
+      "rank": 94,
+      "name": "GeForce GTX 970",
+      "benchmark_score": 399.1,
+      "relative_performance": 5.834854991650964,
+      "status": "outdated"
+    },
+    {
+      "rank": 95,
+      "name": "Radeon RX 470",
+      "benchmark_score": 395.1,
+      "relative_performance": 5.776506441734455,
+      "status": "outdated"
+    },
+    {
+      "rank": 96,
+      "name": "GeForce GTX 780 Ti",
+      "benchmark_score": 371.4,
+      "relative_performance": 5.429916055230387,
+      "status": "outdated"
+    },
+    {
+      "rank": 97,
+      "name": "Radeon R9 290X",
+      "benchmark_score": 360.3,
+      "relative_performance": 5.267018573573477,
+      "status": "outdated"
+    },
+    {
+      "rank": 98,
+      "name": "Radeon R9 290",
+      "benchmark_score": 342.3,
+      "relative_performance": 5.0036676448948025,
+      "status": "outdated"
+    },
+    {
+      "rank": 99,
+      "name": "GeForce GTX 1650 (4GB)",
+      "benchmark_score": 342.3,
+      "relative_performance": 5.0036676448948025,
+      "status": "outdated"
+    },
+    {
+      "rank": 100,
+      "name": "GeForce GTX 780",
+      "benchmark_score": 239.6,
+      "relative_performance": 3.502567351426361,
+      "status": "outdated"
+    },
+    {
+      "rank": 101,
+      "name": "Radeon R9 380X",
+      "benchmark_score": 239.5,
+      "relative_performance": 3.501105363603299,
+      "status": "outdated"
+    },
+    {
+      "rank": 102,
+      "name": "Radeon R9 380",
+      "benchmark_score": 222.7,
+      "relative_performance": 3.256027988151068,
+      "status": "outdated"
+    },
+    {
+      "rank": 103,
+      "name": "Radeon R9 280X",
+      "benchmark_score": 220.5,
+      "relative_performance": 3.223467708269557,
+      "status": "outdated"
+    },
+    {
+      "rank": 104,
+      "name": "Radeon HD 6990",
+      "benchmark_score": 167.6,
+      "relative_performance": 2.449835458284863,
+      "status": "outdated"
+    },
+    {
+      "rank": 105,
+      "name": "Intel Arc A380",
+      "benchmark_score": 167.5,
+      "relative_performance": 2.448373470461801,
+      "status": "outdated"
+    },
+    {
+      "rank": 106,
+      "name": "Radeon RX 6400",
+      "benchmark_score": 157.4,
+      "relative_performance": 2.3014710622340924,
+      "status": "outdated"
+    },
+    {
+      "rank": 107,
+      "name": "Radeon 780M",
+      "benchmark_score": 157.3,
+      "relative_performance": 2.30000907441103,
+      "status": "outdated"
+    },
+    {
+      "rank": 108,
+      "name": "Radeon 760M",
+      "benchmark_score": 140.0,
+      "relative_performance": 2.0470080762258163,
+      "status": "outdated"
+    },
+    {
+      "rank": 109,
+      "name": "GeForce GTX 1050 Ti",
+      "benchmark_score": 135.8,
+      "relative_performance": 1.9855978339390417,
+      "status": "outdated"
+    },
+    {
+      "rank": 110,
+      "name": "GeForce GTX 1630",
+      "benchmark_score": 135.7,
+      "relative_performance": 1.9841358461159793,
+      "status": "outdated"
+    },
+    {
+      "rank": 111,
+      "name": "GeForce GTX 680",
+      "benchmark_score": 135.6,
+      "relative_performance": 1.9826738582929162,
+      "status": "outdated"
+    },
+    {
+      "rank": 112,
+      "name": "Radeon HD 7970",
+      "benchmark_score": 135.5,
+      "relative_performance": 1.981211870469854,
+      "status": "outdated"
+    },
+    {
+      "rank": 113,
+      "name": "Radeon R9 285",
+      "benchmark_score": 130.1,
+      "relative_performance": 1.9019633956510598,
+      "status": "outdated"
+    },
+    {
+      "rank": 114,
+      "name": "GeForce GTX 960",
+      "benchmark_score": 130.1,
+      "relative_performance": 1.9019633956510598,
+      "status": "outdated"
+    },
+    {
+      "rank": 115,
+      "name": "Radeon HD 5970",
+      "benchmark_score": 130.0,
+      "relative_performance": 1.900501407827997,
+      "status": "outdated"
+    },
+    {
+      "rank": 116,
+      "name": "GeForce GTX 770",
+      "benchmark_score": 129.9,
+      "relative_performance": 1.8990394200049345,
+      "status": "outdated"
+    },
+    {
+      "rank": 117,
+      "name": "Radeon R9 280",
+      "benchmark_score": 118.2,
+      "relative_performance": 1.7281258722044903,
+      "status": "outdated"
+    },
+    {
+      "rank": 118,
+      "name": "GeForce GTX 670",
+      "benchmark_score": 115.8,
+      "relative_performance": 1.6935633547604008,
+      "status": "outdated"
+    },
+    {
+      "rank": 119,
+      "name": "GeForce GTX 760",
+      "benchmark_score": 111.2,
+      "relative_performance": 1.6258208205699842,
+      "status": "outdated"
+    },
+    {
+      "rank": 120,
+      "name": "GeForce GTX 660 Ti",
+      "benchmark_score": 103.4,
+      "relative_performance": 1.5120133631300856,
+      "status": "outdated"
+    },
+    {
+      "rank": 121,
+      "name": "Radeon HD 7950",
+      "benchmark_score": 103.3,
+      "relative_performance": 1.510551375307023,
+      "status": "outdated"
+    },
+    {
+      "rank": 122,
+      "name": "GeForce GTX 1050",
+      "benchmark_score": 101.3,
+      "relative_performance": 1.4803403478008823,
+      "status": "outdated"
+    },
+    {
+      "rank": 123,
+      "name": "Radeon RX 560",
+      "benchmark_score": 95.2,
+      "relative_performance": 1.3915199269328293,
+      "status": "outdated"
+    },
+    {
+      "rank": 124,
+      "name": "GeForce GTX 950",
+      "benchmark_score": 90.4,
+      "relative_performance": 1.321943930586188,
+      "status": "outdated"
+    },
+    {
+      "rank": 125,
+      "name": "Radeon RX 460 (4GB)",
+      "benchmark_score": 90.3,
+      "relative_performance": 1.3204819427631254,
+      "status": "outdated"
+    },
+    {
+      "rank": 126,
+      "name": "Radeon RX 460 (2GB)",
+      "benchmark_score": 80.4,
+      "relative_performance": 1.1752289290591813,
+      "status": "outdated"
+    },
+    {
+      "rank": 127,
+      "name": "Radeon R9 270X",
+      "benchmark_score": 80.3,
+      "relative_performance": 1.1737669412361187,
+      "status": "outdated"
+    },
+    {
+      "rank": 128,
+      "name": "GeForce GTX 580",
+      "benchmark_score": 61.8,
+      "relative_performance": 0.9038005447518115,
+      "status": "outdated"
+    },
+    {
+      "rank": 129,
+      "name": "Radeon R9 270",
+      "benchmark_score": 58.1,
+      "relative_performance": 0.8495725120667028,
+      "status": "outdated"
+    },
+    {
+      "rank": 130,
+      "name": "Radeon R7 370",
+      "benchmark_score": 58.0,
+      "relative_performance": 0.84811052424364,
+      "status": "outdated"
+    },
+    {
+      "rank": 131,
+      "name": "Radeon HD 7870",
+      "benchmark_score": 53.4,
+      "relative_performance": 0.7802616823041488,
+      "status": "outdated"
+    },
+    {
+      "rank": 132,
+      "name": "GeForce GTX 660",
+      "benchmark_score": 50.7,
+      "relative_performance": 0.7412485981889415,
+      "status": "outdated"
+    },
+    {
+      "rank": 133,
+      "name": "GeForce GTX 570",
+      "benchmark_score": 50.6,
+      "relative_performance": 0.7397866103658788,
+      "status": "outdated"
+    },
+    {
+      "rank": 134,
+      "name": "GeForce GTX 480",
+      "benchmark_score": 50.1,
+      "relative_performance": 0.7323887442622201,
+      "status": "outdated"
+    },
+    {
+      "rank": 135,
+      "name": "GeForce GTX 650 Ti Boost",
+      "benchmark_score": 50.0,
+      "relative_performance": 0.7309267564391574,
+      "status": "outdated"
+    },
+    {
+      "rank": 136,
+      "name": "Radeon HD 6970",
+      "benchmark_score": 43.5,
+      "relative_performance": 0.6359062781020669,
+      "status": "outdated"
+    },
+    {
+      "rank": 137,
+      "name": "Radeon HD 7850",
+      "benchmark_score": 40.5,
+      "relative_performance": 0.5913928386349222,
+      "status": "outdated"
+    },
+    {
+      "rank": 138,
+      "name": "Radeon HD 5870",
+      "benchmark_score": 38.0,
+      "relative_performance": 0.5559092683168267,
+      "status": "outdated"
+    },
+    {
+      "rank": 139,
+      "name": "Radeon HD 6950",
+      "benchmark_score": 37.9,
+      "relative_performance": 0.554447280493764,
+      "status": "outdated"
+    },
+    {
+      "rank": 140,
+      "name": "GeForce GTX 560 Ti",
+      "benchmark_score": 36.0,
+      "relative_performance": 0.5267249164690759,
+      "status": "outdated"
+    },
+    {
+      "rank": 141,
+      "name": "GeForce GTX 470",
+      "benchmark_score": 33.1,
+      "relative_performance": 0.4845869231515498,
+      "status": "outdated"
+    }]}

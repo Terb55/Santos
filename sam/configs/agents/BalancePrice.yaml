@@ -1,0 +1,99 @@
+log:
+  stdout_log_level: INFO
+
+!include ../shared_config.yaml
+
+# =============================================================================
+# BALANCE / PRICE AGENT (Comparison + Benchmark)
+# =============================================================================
+
+apps:
+  - name: balanceprice_app
+    app_base_path: .
+    app_module: solace_agent_mesh.agent.sac.app
+
+    broker:
+      <<: *broker_connection
+
+    app_config:
+      namespace: ${NAMESPACE, sam/}
+      supports_streaming: true
+      agent_name: "BalancePrice"
+      display_name: "Balance / Price Evaluator"
+      model: *general_model
+
+      instruction: |
+        You evaluate PC parts based on both real-world pricing (via the Price Tracking agent)
+        and performance benchmarks loaded from local JSON files.
+
+        You have access to three benchmark files in ./sam/BalancePrice:
+          1. cpu1.json - CPU Gaming Performance benchmarks
+          2. cpu2.json - CPU Software/Productivity benchmarks
+          3. gpu.json - GPU Gaming Performance benchmarks
+
+        You must:
+          - Use benchmark_title/benchmark_name to choose the right benchmark file
+          - Use select_best_part() to pick the single highest-ranked CPU within the price range
+          - Return only one result (no lists, no multiple options)
+
+        You can evaluate CPUs for either "gaming" or "software" performance.
+        GPUs are evaluated for gaming performance.
+
+        EXAMPLE USAGE:
+          1. Find parts in benchmark files
+          2. Get prices from PriceTracking agent of those parts
+          3. Pass parts + prices to compute_balance()
+          4. Return results with balance scores and rankings
+
+        OUTPUT FORMAT:
+          {
+            "status": "success",
+            "part": "AMD Ryzen 7 9800X3D",
+            "price": 499.99,
+            "benchmark_title": "Processor Gaming Benchmark",
+            "benchmark_rank": 1,
+            "category": "cpu",
+            "benchmark_type": "gaming"
+          }
+
+      tools:
+        - tool_type: python
+          component_module: "src.BalancePrice_tool"
+          component_base_path: .
+          function_name: "select_best_part"
+          tool_config:
+            benchmark_source: ${BENCHMARK_SOURCE, ./sam/BalancePrice}
+
+      session_service:
+        type: ${PERSISTENCE_TYPE, memory}
+        database_url: ${CUSTOM_AGENT_DATABASE_URL,}
+
+      artifact_service: *default_artifact_service
+
+      agent_card:
+        description: >
+          Evaluates best PC parts based on price-performance ratio. Uses local benchmark
+          files (CPU gaming, CPU software, and GPU gaming) combined with real-time pricing
+          from PriceTracking to compute performance-per-dollar rankings.
+        defaultInputModes: ["text"]
+        defaultOutputModes: ["text"]
+        skills:
+          - id: "balance_price"
+            name: "Balance/Price Ranking"
+            description: "Computes performance-per-dollar rankings for PC parts using benchmarks and pricing."
+          - id: "benchmark_lookup"
+            name: "Benchmark Lookup"
+            description: "Looks up performance benchmarks for specific PC parts."
+          - id: "top_performers"
+            name: "Top Performers"
+            description: "Lists top performing parts by benchmark score."
+
+      agent_card_publishing:
+        interval_seconds: 10
+
+      agent_discovery:
+        enabled: true
+
+      inter_agent_communication:
+        allow_list: ["Pricetracking", "OrchestratorAgent"]
+        request_timeout_seconds: 60
