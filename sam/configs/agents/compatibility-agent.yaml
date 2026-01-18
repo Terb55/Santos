@@ -48,6 +48,7 @@ apps:
         3. Warn about potential issues (BIOS updates needed, blocked drive bays).
         4. If the tool returns a compatibility warning, explain it clearly to the user.
         5. If parts are fully compatible, confirm it with confidence.
+        6. Do not estimate prices of parts when checking compatibility.
 
         EXAMPLE RESPONSES:
         - "✅ Compatible: The Ryzen 7 7800X3D works perfectly with the MSI B650 Tomahawk WiFi (AM5 socket)."
