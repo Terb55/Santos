@@ -13,6 +13,7 @@ RUN python3.11 -m pip install --no-cache-dir -r requirements.txt
 USER solaceai
 COPY --chown=solaceai:solaceai configs/ /app/configs/
 COPY --chown=solaceai:solaceai src/ /app/src/
+COPY --chown=solaceai:solaceai BalancePrice/ /app/sam/BalancePrice/
 
 WORKDIR /app
 

@@ -16,6 +16,7 @@ import os
 from typing import Any, Dict, List, Optional
 from urllib.parse import urlencode
 from urllib.request import Request, urlopen
+from urllib.error import HTTPError, URLError
 
 # Module-level logger - SAM will configure this based on your YAML or logging_config.yaml
 log = logging.getLogger(__name__)
@@ -113,6 +114,28 @@ async def serpapi_get_prices(
             "offers": offers,
         }
 
+    except HTTPError as e:
+        retry_after = e.headers.get("Retry-After") if getattr(e, "headers", None) else None
+        if e.code == 429:
+            message = "SerpApi rate limit hit (HTTP 429)."
+            if retry_after:
+                message += f" Retry after {retry_after} seconds."
+            log.warning(f"{log_id} {message}")
+            return {
+                "status": "error",
+                "message": message,
+            }
+        log.error(f"{log_id} HTTP error: {e}", exc_info=True)
+        return {
+            "status": "error",
+            "message": f"HTTP error {e.code}: {e.reason}",
+        }
+    except URLError as e:
+        log.error(f"{log_id} Network error: {e}", exc_info=True)
+        return {
+            "status": "error",
+            "message": f"Network error: {str(e)}",
+        }
     except Exception as e:
         log.error(f"{log_id} Unexpected error: {e}", exc_info=True)
         return {
